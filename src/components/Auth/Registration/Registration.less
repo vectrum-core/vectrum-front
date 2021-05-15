@@ -1,0 +1,79 @@
+.registration-title.ant-typography {
+  margin-bottom: 10px;
+  font-size: 48px;
+
+  @media (max-width: @xxl) {
+    font-size: 36px;
+  }
+
+  @media (max-width: @xl) {
+    font-size: 32px;
+  }
+
+  @media (max-width: @lg) {
+    font-size: 24px;
+  }
+}
+
+.registration-steps {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 20px;
+
+  @media (max-width: @osx) {
+    margin-top: 15px;
+  }
+}
+
+.registration-step {
+  width: 32px;
+  height: 32px;
+
+  &:hover,
+  &.active {
+    .anticon {
+      color: #ffffff !important;
+      opacity: 1;
+    }
+  }
+
+  + .registration-step {
+    margin-left: 15px;
+  }
+
+  .anticon {
+    font-size: 32px !important;
+    color: #fcfcfc;
+    opacity: 0.24;
+    transition: 0.3s !important;
+  }
+}
+
+.registration-form.ant-form {
+  margin-top: 20px;
+}
+
+.registration-form-action {
+  .ant-btn {
+    padding: 13.5px 20px;
+
+    + .ant-btn {
+      margin-top: 10px;
+    }
+  }
+}
+
+.registration-verify-modal {
+  .ant-form {
+    margin-top: 35px;
+  }
+}
+
+.registration-policy {
+  .ant-checkbox + span {
+    @media (max-width: @xxl) {
+      font-size: 12px;
+    }
+  }
+}

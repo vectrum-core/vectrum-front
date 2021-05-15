@@ -1,0 +1,95 @@
+.dashboard-footer {
+  width: 100%;
+
+  @media (max-width: @xl) {
+    margin-top: 20px;
+  }
+
+  .social-title {
+    margin-bottom: 20px;
+    font-weight: 300;
+    font-size: 15px;
+
+    @media (max-width: @xl) {
+      margin-bottom: 15px;
+      font-size: 12px;
+    }
+  }
+
+  .social-list {
+    margin-bottom: 20px;
+
+    @media (max-width: @xl) {
+      margin-bottom: 15px;
+    }
+  }
+
+  .social-list-link {
+    font-size: 34px;
+
+    @media (max-width: @xl) {
+      font-size: 28px;
+    }
+  }
+
+  .social-email {
+    font-weight: 300;
+    font-size: 15px;
+
+    @media (max-width: @xl) {
+      font-size: 12px;
+    }
+  }
+
+  .logo {
+    @media (max-width: @md) {
+      margin-bottom: 20px;
+    }
+  }
+
+  .social {
+    @media (max-width: @md) {
+      align-items: flex-start;
+    }
+  }
+}
+
+.dashboard-footer-container {
+  display: flex;
+  justify-content: space-between;
+
+  @media (max-width: @md) {
+    flex-direction: column;
+  }
+}
+
+.dashboard-footer-nav-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  @media (max-width: @md) {
+    margin-bottom: 20px;
+  }
+}
+
+.dashboard-footer-nav-list-item {
+  max-width: 150px;
+
+  + .dashboard-footer-nav-list-item {
+    margin-top: 10px;
+  }
+}
+
+.dashboard-footer-nav-list-link {
+  font-size: 15px;
+  color: #15242d;
+
+  @media (max-width: @xl) {
+    font-size: 14px;
+  }
+
+  &:hover {
+    color: @primary-color;
+  }
+}

@@ -1,0 +1,56 @@
+.auth-form {
+  padding: 30px;
+  border-radius: 30px;
+  background-color: rgba(#ffffff, 0.2);
+
+  @media (max-width: @xxl) {
+    padding: 20px 25px;
+  }
+
+  .ant-typography {
+    color: #ffffff;
+
+    &.ant-typography-secondary {
+      color: #ffffff;
+    }
+  }
+
+  a.ant-typography {
+    color: @primary-color;
+
+    &:hover {
+      color: @primary-color;
+      text-decoration: underline;
+    }
+  }
+
+  .ant-form-item-label > label {
+    color: #ffffff;
+  }
+
+  input {
+    color: #ffffff;
+
+    &::placeholder {
+      color: rgba(#ffffff, 0.5);
+    }
+  }
+
+  .ant-input-group-addon {
+    .anticon {
+      color: rgba(#ffffff, 0.5);
+    }
+  }
+
+  .ant-checkbox-inner {
+    background-color: transparent;
+  }
+
+  .ant-checkbox-wrapper {
+    color: #ffffff;
+  }
+
+  .border-less-form .ant-form-item-explain {
+    color: rgba(#ffffff, 0.75);
+  }
+}

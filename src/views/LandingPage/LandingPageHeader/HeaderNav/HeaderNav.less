@@ -1,0 +1,38 @@
+.header-nav {
+  margin-left: auto;
+
+  @media (max-width: @lg) {
+    display: none;
+  }
+}
+
+.header-nav-list {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  list-style: none;
+}
+
+.header-nav-list-item {
+  + .header-nav-list-item {
+    margin-left: 100px;
+
+    @media (max-width: @xxl) {
+      margin-left: 50px;
+    }
+  }
+}
+
+.header-nav-list-link {
+  font-weight: 300;
+  font-size: 18px;
+
+  @media (max-width: @xxl) {
+    font-size: 16px;
+  }
+
+  @media (max-width: @xl) {
+    font-size: 14px;
+  }
+}

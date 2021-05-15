@@ -1,0 +1,154 @@
+.header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 12px 0;
+  z-index: 10;
+
+  @media (max-width: @lg) {
+    padding: 10px 0;
+  }
+
+  &.header-landing {
+    &::after {
+      display: none;
+    }
+
+    .header-nav-list-link {
+      color: #ffffff !important;
+
+      &:hover {
+        color: @primary-color !important;
+      }
+    }
+
+    .lang-switcher {
+      .ant-select-arrow {
+        path {
+          stroke: #fff;
+        }
+
+        @media (max-width: @md) {
+          color: #fcfcfc;
+        }
+      }
+    }
+  }
+
+  &.header-fill {
+    position: fixed;
+    background-color: #fcfcfc;
+    box-shadow: 0px 1px 18px rgba(#000000, 0.25);
+
+    .header-nav-list-link {
+      color: #15242d !important;
+
+      &:hover {
+        color: @primary-color !important;
+      }
+    }
+
+    .header-toggle-drawer {
+      .anticon {
+        color: #15242d;
+      }
+    }
+
+    .lang-switcher {
+      .ant-select-arrow {
+        path {
+          stroke: #6c757d;
+        }
+      }
+    }
+  }
+
+  .lang-switcher {
+    margin-left: 140px;
+
+    @media (max-width: @xxl) {
+      margin-left: 80px;
+    }
+
+    @media (max-width: @xl) {
+      margin-left: 50px;
+    }
+
+    @media (max-width: @lg) {
+      display: none;
+    }
+  }
+
+  .header-toggle-drawer {
+    .anticon {
+      color: #ffffff;
+    }
+  }
+}
+
+.header-container {
+  display: flex;
+  align-items: center;
+}
+
+.header-toggle-drawer {
+  display: none !important;
+  margin-left: auto;
+
+  @media (max-width: @lg) {
+    display: inline-block !important;
+  }
+}
+
+.drawer-header {
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  .logo {
+    max-width: 120px;
+  }
+
+  .ant-select {
+    margin-right: -11px;
+  }
+
+  .ant-select-selector,
+  .ant-select-selection-search-input {
+    height: 23px !important;
+
+    @media (max-width: @sm) {
+      height: 19px !important;
+    }
+  }
+
+  .ant-select-selection-item {
+    line-height: 1 !important;
+  }
+}
+
+.drawer-nav-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.drawer-nav-list-item {
+  + .drawer-nav-list-item {
+    margin-top: 20px;
+  }
+}
+
+.drawer-nav-list-link {
+  font-size: 18px;
+}
+
+.drawer-logout.ant-btn {
+  margin-top: 20px;
+  padding: 0;
+  height: auto;
+  font-size: 18px;
+  border-radius: 0;
+}

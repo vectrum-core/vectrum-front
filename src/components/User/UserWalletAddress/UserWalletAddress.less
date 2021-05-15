@@ -1,0 +1,35 @@
+.user-wallet-address {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.user-wallet-address-value {
+  max-width: 140px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-weight: 300;
+  font-size: 18px;
+  letter-spacing: 0.01em;
+
+  @media (max-width: @xl) {
+    max-width: 100%;
+    font-size: 16px;
+  }
+}
+
+.user-wallet-address-actions {
+  margin-left: 15px;
+  flex-shrink: 0;
+}
+
+.user-wallet-address-action {
+  + .user-wallet-address-action {
+    margin-left: 10px;
+  }
+}
+
+.user-wallet-address-action-copy {
+  cursor: copy;
+}

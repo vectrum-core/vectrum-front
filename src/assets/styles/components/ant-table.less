@@ -1,0 +1,40 @@
+.ant-table {
+  @media (max-width: @lg) {
+    font-size: 14px;
+  }
+
+  .ant-btn {
+    box-shadow: none;
+
+    @media (max-width: @lg) {
+      font-size: 14px;
+    }
+  }
+
+  a {
+    display: inline-block;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    max-width: 90px;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  .ant-typography {
+    margin-bottom: 0;
+  }
+}
+
+.ant-table-thead > tr > th,
+.ant-table-tbody > tr > td,
+.ant-table tfoot > tr > th,
+.ant-table tfoot > tr > td {
+  padding: 10px;
+}
+
+.ant-table-thead > tr > th {
+  text-align: center;
+}

@@ -1,0 +1,22 @@
+.logout-alert-modal-actions {
+  margin-top: 35px;
+  display: flex;
+
+  @media (max-width: @sm) {
+    flex-direction: column;
+  }
+
+  .ant-btn {
+    padding-right: 30px;
+    padding-left: 30px;
+
+    + .ant-btn {
+      margin-left: 20px;
+
+      @media (max-width: @sm) {
+        margin-top: 20px;
+        margin-left: 0;
+      }
+    }
+  }
+}

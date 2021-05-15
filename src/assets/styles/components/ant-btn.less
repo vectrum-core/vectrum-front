@@ -1,0 +1,53 @@
+// .ant-btn-sm {
+//   @media (max-width: @xxl) {
+//     font-size: 16px;
+//   }
+// }
+
+.ant-btn-link {
+  &:focus {
+    color: initial;
+  }
+}
+
+.ant-btn-icon-only,
+.ant-btn-icon-only.ant-btn-sm {
+  padding: 0;
+  border: 0;
+
+  .anticon {
+    height: 24px;
+    font-size: 24px;
+
+    @media (max-width: @xl) {
+      height: 22px;
+      font-size: 22px;
+    }
+  }
+}
+
+.ant-btn-icon-only.ant-btn-sm {
+  @media (max-width: @xl) {
+    width: 30px;
+    height: 30px;
+  }
+
+  .anticon {
+    height: 22px;
+    font-size: 22px;
+
+    @media (max-width: @xl) {
+      height: 20px;
+      font-size: 20px;
+    }
+  }
+}
+
+.ant-btn-primary[disabled],
+.ant-btn-primary[disabled]:hover,
+.ant-btn-primary[disabled]:focus,
+.ant-btn-primary[disabled]:active {
+  color: #ffffff;
+  border-color: #d6d6d6;
+  background-color: #d6d6d6;
+}

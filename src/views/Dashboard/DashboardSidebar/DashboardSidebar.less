@@ -1,0 +1,71 @@
+.dashboard-sidebar-wrapper {
+  position: relative;
+  height: 100%;
+}
+
+.dashboard-sidebar {
+  position: sticky;
+  top: 80px;
+}
+
+.dashboard-sidebar-card {
+  .ant-card-body {
+    padding: 0 !important;
+  }
+}
+
+.dashboard-sidebar-title.ant-typography {
+  margin-bottom: 10px;
+  font-size: 20px;
+
+  @media (max-width: @xxl) {
+    font-size: 18px;
+  }
+
+  @media (max-width: @xl) {
+    margin-bottom: 5px;
+    font-size: 16px;
+  }
+}
+
+.dashboard-sidebar-user {
+  padding: 25px 30px 15px;
+
+  @media (max-width: @xxl) {
+    padding: 20px 20px 10px;
+  }
+
+  @media (max-width: @xxl) {
+    padding: 20px 20px 5px;
+  }
+}
+
+.dashboard-sidebar-user-item {
+  + .dashboard-sidebar-user-item {
+    margin-top: 30px;
+
+    @media (max-width: @xxl) {
+      margin-top: 10px;
+    }
+
+    @media (max-width: @xl) {
+      margin-top: 5px;
+    }
+  }
+}
+
+.dashboard-sidebar-currency-rates {
+  padding: 15px 25px 30px;
+
+  @media (max-width: @xxl) {
+    padding: 10px 20px 20px;
+  }
+
+  @media (max-width: @xl) {
+    padding: 5px 20px 20px;
+  }
+
+  .dashboard-sidebar-title.ant-typography {
+    margin-bottom: 15px;
+  }
+}
