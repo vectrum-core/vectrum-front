@@ -10,7 +10,7 @@ import "./DashboardSidebar.less";
 
 const { Title } = Typography;
 
-export default function DashboardSidebar() {
+export default function DashboardSidebar({ onChangeRoute }) {
   return (
     <div className="dashboard-sidebar-wrapper">
       <aside className="dashboard-sidebar">
@@ -33,7 +33,9 @@ export default function DashboardSidebar() {
             </div>
           </div>
 
-          <DashboardSidebarNav></DashboardSidebarNav>
+          <DashboardSidebarNav
+            onChangeRoute={onChangeRoute}
+          ></DashboardSidebarNav>
 
           <div className="dashboard-sidebar-currency-rates">
             <Title className="dashboard-sidebar-title" level={3}>

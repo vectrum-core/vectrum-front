@@ -57,9 +57,7 @@ export default function Dashboard() {
                   component={DashboardUserSettings}
                 />
               </Switch>
-            </Col>
 
-            <Col xl={{ span: 9, offset: 3 }}>
               <DashboardFooter />
             </Col>
           </Row>

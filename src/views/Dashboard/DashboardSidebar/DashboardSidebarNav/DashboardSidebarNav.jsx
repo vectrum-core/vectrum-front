@@ -51,17 +51,18 @@ const nav = [
   },
 ];
 
-export default function DashboardSidebarNav() {
+export default function DashboardSidebarNav({ onChangeRoute }) {
   return (
     <nav className="dashboard-sidebar-nav">
       <ul className="dashboard-sidebar-nav-list">
         {nav.map((item, index) => (
           <li key={index} className="dashboard-sidebar-nav-list-item">
             <NavLink
+              to={item.to}
               exact
               className="dashboard-sidebar-nav-list-link"
               activeClassName="dashboard-sidebar-nav-list-link-active"
-              to={item.to}
+              onClick={onChangeRoute}
             >
               {item.icon}
               {item.title}

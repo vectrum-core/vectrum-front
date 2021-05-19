@@ -118,7 +118,7 @@ export default function Header() {
         </div>
 
         <div className="dashboard-drawer-sidebar">
-          <DashboardSidebar />
+          <DashboardSidebar onChangeRoute={onCloseDrawer} />
         </div>
 
         <div className="dashboard-drawer-footer">

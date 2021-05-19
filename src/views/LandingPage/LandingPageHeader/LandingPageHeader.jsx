@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
-import { Button, Drawer } from "antd";
+import { Button, Drawer, Row, Col } from "antd";
+import { Link as AnchorLink } from "react-scroll";
 import Container from "../../../components/Common/Container/Container";
 import Logo from "../../../components/Common/Logo/Logo";
 import HeaderNav from "./HeaderNav/HeaderNav";
 import LangSwitcher from "../../../components/Common/LangSwitcher/LangSwitcher";
 
-import { BurgerIcon } from "../../../components/Icons/Icons";
+import { BurgerIcon, CloseIcon } from "../../../components/Icons/Icons";
+
+import { scrollOptions } from "../.././../assets/js/const/index";
 
 import "./LandingPageHeader.less";
 
@@ -70,18 +73,18 @@ export default function LandingPageHeader() {
         }`}
       >
         <Container className="header-container">
-          <Logo color={offset > mainHeight ? "black" : "white"}></Logo>
+          <Logo color={offset > mainHeight ? "black" : "white"} />
 
-          <HeaderNav list={navList} mode={""}></HeaderNav>
+          <HeaderNav list={navList} mode={""} />
 
-          <LangSwitcher></LangSwitcher>
+          <LangSwitcher />
 
           <Button
             className="header-toggle-drawer"
             type="link"
             icon={<BurgerIcon />}
             onClick={showDrawer}
-          ></Button>
+          />
         </Container>
       </header>
 
@@ -94,20 +97,49 @@ export default function LandingPageHeader() {
         visible={drawerVisible}
       >
         <div className="drawer-header">
-          <Logo position="" color="black"></Logo>
+          <Logo position="" color="black" />
 
-          <LangSwitcher></LangSwitcher>
+          <Button
+            type="link"
+            className="drawer-header-close"
+            icon={<CloseIcon />}
+            onClick={onCloseDrawer}
+          />
         </div>
 
         <ul className="drawer-nav-list">
           {navList.map((item, index) => (
             <li key={index} className="drawer-nav-list-item">
-              <Link to={item.to} className="drawer-nav-list-link">
-                {item.label}
-              </Link>
+              {item.href ? (
+                <a
+                  href={item.href}
+                  className="drawer-nav-list-link"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  {item.title}
+                </a>
+              ) : (
+                <AnchorLink
+                  to={item.id}
+                  {...scrollOptions}
+                  className="drawer-nav-list-link"
+                  onClick={onCloseDrawer}
+                >
+                  {item.label}
+                </AnchorLink>
+              )}
             </li>
           ))}
         </ul>
+
+        <div className="drawer-footer">
+          <Row align="middle">
+            <Col span={6}>
+              <LangSwitcher />
+            </Col>
+          </Row>
+        </div>
       </Drawer>
     </>
   );
