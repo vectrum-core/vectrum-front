@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { hot } from "react-hot-loader";
 
 import LandingPageHeader from "./LandingPageHeader/LandingPageHeader";
 import LandingPageMain from "./LandingPageMain/LandingPageMain";
@@ -15,14 +16,14 @@ import Alert from "../../components/Alert/Alert";
 
 import "./LandingPage.less";
 
-export default function LandingPage() {
-  const [isCreateWalletVisible, setIsCreateWalletVisible] = useState(true);
-  const [isAddEmailVisible, setIsAddEmailVisible] = useState(true);
+function LandingPage() {
+  const [isCreateWalletVisible, setIsCreateWalletVisible] = useState(false);
+  const [isAddEmailVisible, setIsAddEmailVisible] = useState(false);
   const [
     isAddEmailVerificationVisible,
     setIsAddEmailVerificationVisible,
-  ] = useState(true);
-  const [isAlertVisible, setIsAlertVisible] = useState(true);
+  ] = useState(false);
+  const [isAlertVisible, setIsAlertVisible] = useState(false);
 
   return (
     <>
@@ -59,3 +60,5 @@ export default function LandingPage() {
     </>
   );
 }
+
+export default hot(module)(LandingPage);

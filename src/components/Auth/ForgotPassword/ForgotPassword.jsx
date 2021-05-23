@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { hot } from "react-hot-loader";
 
 import { Row, Col, Typography, Form, Input, Button, Modal } from "antd";
 import { CloseIcon } from "../../Icons/Icons";
@@ -8,7 +9,7 @@ import "../Auth.less";
 
 const { Title, Text, Paragraph, Link } = Typography;
 
-export default function ForgotPassword({ onChangeTab }) {
+function ForgotPassword({ onChangeTab }) {
   const [isSuccessModalVisible, setIsSuccessModalVisible] = useState(false);
 
   function onSubmitForm() {
@@ -91,3 +92,5 @@ export default function ForgotPassword({ onChangeTab }) {
     </>
   );
 }
+
+export default hot(module)(ForgotPassword);

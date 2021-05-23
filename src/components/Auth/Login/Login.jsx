@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { hot } from "react-hot-loader";
 import { Link as RouterLink } from "react-router-dom";
 
 import { Typography, Form, Input, Button } from "antd";
@@ -24,10 +25,10 @@ const loginTypes = [
   },
 ];
 
-export default function Login({ onChangeTab }) {
+function Login({ onChangeTab }) {
   const [loginType, setLoginType] = useState("WITH_LOGIN");
 
-  function onLoginWithTelegram() {}
+  function onLoginWithTelegram() { }
 
   return (
     <div className="auth-form login">
@@ -101,3 +102,5 @@ export default function Login({ onChangeTab }) {
     </div>
   );
 }
+
+export default hot(module)(Login);

@@ -1,4 +1,5 @@
 import React from "react";
+import { hot } from "react-hot-loader";
 
 import { Typography, Form, Input, Button } from "antd";
 
@@ -7,7 +8,7 @@ import "../Auth.less";
 
 const { Title, Text, Link } = Typography;
 
-export default function ResetPassword({ onChangeTab }) {
+function ResetPassword({ onChangeTab }) {
   return (
     <div className="auth-form reset-password">
       <Title className="reset-password-title" level={2}>
@@ -43,3 +44,5 @@ export default function ResetPassword({ onChangeTab }) {
     </div>
   );
 }
+
+export default hot(module)(ResetPassword);

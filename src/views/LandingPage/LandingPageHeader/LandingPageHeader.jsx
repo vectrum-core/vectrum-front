@@ -1,18 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-
 import { Button, Drawer, Row, Col } from "antd";
 import { Link as AnchorLink } from "react-scroll";
 import Container from "../../../components/Common/Container/Container";
 import Logo from "../../../components/Common/Logo/Logo";
 import HeaderNav from "./HeaderNav/HeaderNav";
 import LangSwitcher from "../../../components/Common/LangSwitcher/LangSwitcher";
-
 import { BurgerIcon, CloseIcon } from "../../../components/Icons/Icons";
-
 import { scrollOptions } from "../.././../assets/js/const/index";
-
+import { explorerUrl } from "../../../constants";
 import "./LandingPageHeader.less";
+
+
 
 const navList = [
   {
@@ -20,14 +19,15 @@ const navList = [
     label: "О кошельке",
   },
   {
-    to: "/",
+    to: "/buy",
     label: "Купить VTM",
   },
   {
-    to: "/",
+    to: "/docs",
     label: "Документация",
   },
   {
+    //to: explorerUrl, // TODO href
     to: "/",
     label: "Explorer",
   },
@@ -68,9 +68,8 @@ export default function LandingPageHeader() {
   return (
     <>
       <header
-        className={`header header-landing ${
-          offset > mainHeight ? "header-fill" : ""
-        }`}
+        className={`header header-landing ${offset > mainHeight ? "header-fill" : ""
+          }`}
       >
         <Container className="header-container">
           <Logo color={offset > mainHeight ? "black" : "white"} />

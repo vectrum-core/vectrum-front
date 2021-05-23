@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { hot } from "react-hot-loader";
 
 import {
   Typography,
@@ -43,11 +44,11 @@ const resgistrationTypes = [
   },
 ];
 
-export default function Registration({ onChangeTab }) {
+function Registration({ onChangeTab }) {
   const [registrationType, setRegistrationType] = useState("WITH_LOGIN");
   const [isVerifyModalVisible, setIsVerifyModalVisible] = useState(false);
 
-  function onRegisterWithTelegram() {}
+  function onRegisterWithTelegram() { }
 
   function onSubmitForm() {
     setIsVerifyModalVisible(true);
@@ -180,3 +181,5 @@ export default function Registration({ onChangeTab }) {
     </>
   );
 }
+
+export default hot(module)(Registration);

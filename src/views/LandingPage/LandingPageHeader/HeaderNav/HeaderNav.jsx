@@ -1,11 +1,10 @@
 import React from "react";
 // import { Link } from "react-router-dom";
-
 import { Link as AnchorLink } from "react-scroll";
-
 import { scrollOptions } from "../../../../assets/js/const/index";
-
 import "./HeaderNav.less";
+
+
 
 export default function HeaderNav({ list, mode }) {
   return (

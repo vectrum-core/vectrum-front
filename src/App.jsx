@@ -17,7 +17,6 @@ function App() {
         <Route path="/dashboard" component={Dashboard} />
 
         <Route path="/buy" component={ErrorPage} />
-
         <Route path="/about" component={ErrorPage} />
 
         <Route path="/terms" component={ErrorPage} />
