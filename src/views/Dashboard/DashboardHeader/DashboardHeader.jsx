@@ -56,9 +56,8 @@ export default function Header() {
   return (
     <>
       <header
-        className={`dashboard-header ${
-          offset || window.pageYOffset > 0 ? "dashboard-header-fill" : ""
-        }`}
+        className={`dashboard-header ${offset || window.pageYOffset > 0 ? "dashboard-header-fill" : ""
+          }`}
       >
         <Container>
           <Row

@@ -1,20 +1,21 @@
 import React from "react";
 import { Link } from "react-router-dom";
-
 import { Card } from "antd";
 import Logo from "../../../components/Common/Logo/Logo";
 import Social from "../../../components/Common/Social/Social";
-
+import { projectEmailSupport } from "../../../constants";
 import "./DashboardFooter.less";
+
+
 
 const nav = [
   [
     {
-      to: "about-allet",
+      to: "/about",
       title: "О кошельке",
     },
     {
-      href: "/",
+      href: "/buy",
       title: "Купить",
     },
     {
@@ -22,21 +23,21 @@ const nav = [
       title: "FAQ",
     },
     {
-      href: "/",
+      href: `mailto:${projectEmailSupport}`,
       title: "Служба поддержки",
     },
   ],
   [
     {
-      href: "/",
+      href: "/docs",
       title: "Документация",
     },
     {
-      href: "/",
+      href: "/privacy",
       title: "Политика конфиденциальности",
     },
     {
-      href: "/",
+      href: "/terms",
       title: "Пользовательское соглашение",
     },
   ],

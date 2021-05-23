@@ -1,15 +1,14 @@
 import React from "react";
-
 import { Link as AnchorLink } from "react-scroll";
 import Container from "../../../components/Common/Container/Container";
 import Logo from "../../../components/Common/Logo/Logo";
 import Social from "../../../components/Common/Social/Social";
-
 import { scrollOptions } from "../../../assets/js/const/index";
-
 import footerImgTop from "../../../assets/images/footer-img-top.svg";
-
+import { projectEmailSupport } from "../../../constants";
 import "./LandingPageFooter.less";
+
+
 
 const nav = [
   [
@@ -18,7 +17,7 @@ const nav = [
       title: "О кошельке",
     },
     {
-      href: "/",
+      href: "/buy",
       title: "Купить",
     },
     {
@@ -26,21 +25,21 @@ const nav = [
       title: "FAQ",
     },
     {
-      href: "/",
+      href: `mailto:${projectEmailSupport}`,
       title: "Служба поддержки",
     },
   ],
   [
     {
-      href: "/",
+      href: "/docs",
       title: "Документация",
     },
     {
-      href: "/",
+      href: "/privacy",
       title: "Политика конфиденциальности",
     },
     {
-      href: "/",
+      href: "/terms",
       title: "Пользовательское соглашение",
     },
   ],

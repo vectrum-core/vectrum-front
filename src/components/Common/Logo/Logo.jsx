@@ -1,12 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
-
 import "./Logo.less";
-
 import logoHeaderWhite from "../../../assets/images/logo/logo-header-white.png";
 import logoHeaderBlack from "../../../assets/images/logo/logo-header-black.png";
 import logoFooterWhite from "../../../assets/images/logo/logo-footer-white.svg";
 import logoFooterBlack from "../../../assets/images/logo/logo-footer-black.svg";
+
+
 
 export default function Logo({
   to = "/",

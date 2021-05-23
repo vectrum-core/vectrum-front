@@ -1,8 +1,14 @@
 import React from "react";
-
 import { TwitterIcon, YouTubeIcon, TelegramIcon } from "../../Icons/Icons";
-
+import {
+  projectTwitterUrl,
+  projectYouTubeUrl,
+  projectTelegramUrl,
+  projectEmailSupport,
+} from "../../../constants";
 import "./Social.less";
+
+
 
 export default function Social({ dark = false }) {
   return (
@@ -12,7 +18,7 @@ export default function Social({ dark = false }) {
       <ul className="social-list">
         <li className="social-list-item">
           <a
-            href="/"
+            href={projectTwitterUrl}
             className="social-list-link"
             target="_blank"
             rel="noreferrer"
@@ -23,7 +29,7 @@ export default function Social({ dark = false }) {
 
         <li className="social-list-item">
           <a
-            href="/"
+            href={projectYouTubeUrl}
             className="social-list-link"
             target="_blank"
             rel="noreferrer"
@@ -34,7 +40,7 @@ export default function Social({ dark = false }) {
 
         <li className="social-list-item">
           <a
-            href="/"
+            href={projectTelegramUrl}
             className="social-list-link"
             target="_blank"
             rel="noreferrer"
@@ -44,8 +50,8 @@ export default function Social({ dark = false }) {
         </li>
       </ul>
 
-      <a href="mailto:support@vectrum.group" className="social-email">
-        support@vectrum.group
+      <a href={`mailto:${projectEmailSupport}`} className="social-email">
+        {projectEmailSupport}
       </a>
     </div>
   );

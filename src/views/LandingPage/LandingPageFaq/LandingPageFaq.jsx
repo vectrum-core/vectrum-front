@@ -1,13 +1,13 @@
 import React from "react";
-
 import { Row, Col, Typography, Collapse } from "antd";
 import Container from "../../../components/Common/Container/Container";
-
 import landingPageFaqBgFigure1 from "../../../assets/images/figure-2.png";
 import landingPageFaqBgFigure2 from "../../../assets/images/figure-3.png";
 import { ArrowDownIcon } from "../../../components/Icons/Icons";
-
 import "./LandingPageFaq.less";
+import { projectEmailSupport } from "../../../constants";
+
+
 
 const { Title, Link, Text } = Typography;
 const { Panel } = Collapse;
@@ -92,11 +92,11 @@ export default function LandingPageFaq() {
         <Row className="landing-page-faq-support">
           <Col span={12}>
             <Text>
-              Не нашли нужный вопрос? <Link href="/">Напишите нам</Link>
+              Не нашли нужный вопрос? <Link href={`mailto:${projectEmailSupport}`}>Напишите нам</Link>
             </Text>
           </Col>
         </Row>
       </Container>
-    </section>
+    </section >
   );
 }
