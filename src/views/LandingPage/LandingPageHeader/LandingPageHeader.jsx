@@ -8,7 +8,7 @@ import HeaderNav from "./HeaderNav/HeaderNav";
 import LangSwitcher from "../../../components/Common/LangSwitcher/LangSwitcher";
 import { BurgerIcon, CloseIcon } from "../../../components/Icons/Icons";
 import { scrollOptions } from "../.././../assets/js/const/index";
-import { explorerUrl } from "../../../constants";
+//import { explorerUrl } from "../../../constants";
 import "./LandingPageHeader.less";
 
 

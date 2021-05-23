@@ -4,9 +4,11 @@ import { Provider as StoreProvider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import localforage from "localforage";
 import { BrowserRouter as Router } from "react-router-dom";
+import { I18nextProvider } from "react-i18next";
 import { ConfigProvider } from "antd";
 import { Chart, defaults } from "react-chartjs-2";
 import ruRU from "antd/lib/locale/ru_RU";
+import i18n from "./i18n";
 import configureStore from "./store";
 
 
@@ -134,9 +136,11 @@ const Providers = ({ children }) => {
       <StoreProvider store={store}>
         <PersistGate loading={null} persistor={persistor}>
           <ConfigProvider {...config}>
-            <Router>
-              {children}
-            </Router>
+            <I18nextProvider i18n={i18n}>
+              <Router>
+                {children}
+              </Router>
+            </I18nextProvider>
           </ConfigProvider>
         </PersistGate>
       </StoreProvider>

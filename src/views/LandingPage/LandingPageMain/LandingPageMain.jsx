@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-
+import { connect } from "react-redux";
+import { hot } from "react-hot-loader";
 import { Row, Col, Tabs, Typography } from "antd";
 import Container from "../../../components/Common/Container/Container";
 import Login from "../../../components/Auth/Login/Login";
@@ -10,13 +11,17 @@ import ResetPassword from "../../../components/Auth/ResetPassword/ResetPassword"
 import landingPageMainImgBottom from "../../../assets/images/main-shape.png";
 import Mockup from "../../../assets/images/mockup.png";
 import Coin from "../../../assets/images/main-coin.png";
-
+import * as S from "../../../store/selectors";
 import "./LandingPageMain.less";
+
+
 
 const { TabPane } = Tabs;
 const { Title, Paragraph } = Typography;
 
-export default function LandingPageMain() {
+
+function LandingPageMain(props) {
+  const { isAuthenticated } = props;
   const [tab, setTab] = useState("REGISTRATION");
 
   return (
@@ -51,29 +56,32 @@ export default function LandingPageMain() {
               sm={{ span: 10, offset: 1 }}
               span={12}
             >
-              <Tabs activeKey={tab} renderTabBar={() => null}>
-                <TabPane key="LOGIN">
-                  <Login onChangeTab={(key) => setTab(key)}></Login>
-                </TabPane>
+              {isAuthenticated
+                ? null
+                : <Tabs activeKey={tab} renderTabBar={() => null}>
+                  <TabPane key="LOGIN">
+                    <Login onChangeTab={(key) => setTab(key)}></Login>
+                  </TabPane>
 
-                <TabPane key="REGISTRATION">
-                  <Registration
-                    onChangeTab={(key) => setTab(key)}
-                  ></Registration>
-                </TabPane>
+                  <TabPane key="REGISTRATION">
+                    <Registration
+                      onChangeTab={(key) => setTab(key)}
+                    ></Registration>
+                  </TabPane>
 
-                <TabPane key="FORGOT_PASSWORD">
-                  <ForgotPassword
-                    onChangeTab={(key) => setTab(key)}
-                  ></ForgotPassword>
-                </TabPane>
+                  <TabPane key="FORGOT_PASSWORD">
+                    <ForgotPassword
+                      onChangeTab={(key) => setTab(key)}
+                    ></ForgotPassword>
+                  </TabPane>
 
-                <TabPane key="RESET_PASSWORD">
-                  <ResetPassword
-                    onChangeTab={(key) => setTab(key)}
-                  ></ResetPassword>
-                </TabPane>
-              </Tabs>
+                  <TabPane key="RESET_PASSWORD">
+                    <ResetPassword
+                      onChangeTab={(key) => setTab(key)}
+                    ></ResetPassword>
+                  </TabPane>
+                </Tabs>
+              }
             </Col>
           </Row>
         </Container>
@@ -99,3 +107,11 @@ export default function LandingPageMain() {
     </>
   );
 }
+
+function mapStateToProps(state) {
+  return {
+    isAuthenticated: S.profile.isAuthenticated(state),
+  };
+}
+
+export default connect(mapStateToProps)(hot(module)(LandingPageMain));

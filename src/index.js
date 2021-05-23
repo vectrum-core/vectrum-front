@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 import { setConfig, AppContainer } from "react-hot-loader";
 import Providers from "./Providers";
 import App from "./App";
+import "./i18n";
 import "./assets/styles/style.less";
 
 

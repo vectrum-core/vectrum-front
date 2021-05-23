@@ -1,18 +1,21 @@
 import { createStore } from "redux";
 import { persistStore, persistReducer } from "redux-persist";
 import autoMergeLevel1 from "redux-persist/lib/stateReconciler/autoMergeLevel1";
-import localforage from "localforage";
+import storage from "redux-persist/lib/storage";
+//import localforage from "localforage";
 import createEnhancers, { sagaMiddleware } from "./enhancers";
 import createRootReducer from "./rootReducer";
 import rootSaga from "./rootSaga";
 import createApi from "../api";
 import { options, apiOptions } from "../constants";
+import * as A from "./actions";
+import * as S from "./selectors";
 
 
 
 const persistConfig = {
   key: "store",
-  storage: localforage,
+  storage,
   whitelist: [],
   stateReconciler: autoMergeLevel1,
 };
@@ -37,9 +40,13 @@ export const configureStore = (preloadedState = {}) => {
     });
   }
 
+  const getAuthCredentials = () => S.profile.getAuthCredentials(store.getState());
+  const reauthenticate = () => store.dispatch(A.profile.reAuthenticate());
   api = createApi({
     ...apiOptions,
     dispatch: store.dispatch,
+    getAuthCredentials,
+    reauthenticate,
   });
   sagaMiddleware.run(rootSaga, { api, options });
 
