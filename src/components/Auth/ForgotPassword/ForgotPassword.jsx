@@ -1,11 +1,14 @@
 import React, { useState } from "react";
+import { connect } from "react-redux";
 import { hot } from "react-hot-loader";
-
 import { Row, Col, Typography, Form, Input, Button, Modal } from "antd";
 import { CloseIcon } from "../../Icons/Icons";
-
+import * as S from "../../../store/selectors";
+import * as A from "../../../store/actions";
 import "./ForgotPassword.less";
 import "../Auth.less";
+
+
 
 const { Title, Text, Paragraph, Link } = Typography;
 
@@ -93,4 +96,14 @@ function ForgotPassword({ onChangeTab }) {
   );
 }
 
-export default hot(module)(ForgotPassword);
+const mapStateToProps = (state) => {
+  return {
+    isAuthenticated: S.profile.isAuthenticated(state),
+  };
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {};
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(hot(module)(ForgotPassword));

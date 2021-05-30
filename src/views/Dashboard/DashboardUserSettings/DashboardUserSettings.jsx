@@ -1,4 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { connect } from "react-redux";
+import { hot } from "react-hot-loader";
+import * as S from "../../../store/selectors";
+import * as A from "../../../store/actions";
+import { api } from "../../../store/configureStore";
+
 
 import {
   Card,
@@ -40,7 +46,9 @@ const PanelHeader = ({
   </div>
 );
 
-export default function DashboardUserSettings() {
+
+
+function DashboardUserSettings({ account, email }) {
   const [activePane, setActivePane] = useState("");
 
   return (
@@ -70,7 +78,7 @@ export default function DashboardUserSettings() {
               <Panel
                 key="login"
                 header={
-                  <PanelHeader label="Логин" value="1erF44g4sd5f" noAction />
+                  <PanelHeader label="Логин" value={account} noAction />
                 }
               />
 
@@ -79,7 +87,7 @@ export default function DashboardUserSettings() {
                 header={
                   <PanelHeader
                     label="Почта"
-                    value="Почта не добавлена"
+                    value={email ? email : "Почта не добавлена"}
                     actionText="Добавить"
                     active={activePane === "email"}
                     onTogglePane={() =>
@@ -151,7 +159,7 @@ export default function DashboardUserSettings() {
                 header={
                   <PanelHeader
                     label="Telegram"
-                    value="@Tes****"
+                    value="@Test****"
                     active={activePane === "telegram"}
                     onTogglePane={() =>
                       setActivePane(activePane === "telegram" ? "" : "telegram")
@@ -178,3 +186,17 @@ export default function DashboardUserSettings() {
     </div>
   );
 }
+
+
+const mapStateToProps = (state) => {
+  return {
+    account: S.profile.getAccount,
+    email: null,
+  };
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {};
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(hot(module)(DashboardUserSettings));

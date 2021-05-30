@@ -108,7 +108,7 @@ function LandingPageMain(props) {
   );
 }
 
-function mapStateToProps(state) {
+const mapStateToProps = (state) => {
   return {
     isAuthenticated: S.profile.isAuthenticated(state),
   };

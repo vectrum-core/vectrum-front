@@ -16,7 +16,7 @@ function App(props) {
   return (
     <div className="app">
       <Switch>
-        <Route exact path="/" component={LandingPage} />
+        <Route exact path="/" component={!isAuthenticated ? Dashboard : LandingPage} />
 
         <Route path="/dashboard" component={Dashboard} />
 
@@ -32,7 +32,7 @@ function App(props) {
   );
 }
 
-function mapStateToProps(state) {
+const mapStateToProps = (state) => {
   return {
     isAuthenticated: S.profile.isAuthenticated(state),
   };

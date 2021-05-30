@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from 'react-i18next';
 
 import { Select } from "antd";
 // import IconSelectArrow from "../../../assets/images/icons/IconSelectArrow.svg";
@@ -31,13 +32,17 @@ const IconSelectArrow = () => {
 };
 
 export default function LangSwitcher() {
+  const { i18n } = useTranslation();
+
   return (
     <Select
-      defaultValue="ru"
+      //defaultValue={i18n.language}
+      value={i18n.language}
       className="lang-switcher"
       dropdownClassName="lang-switcher-dropdown"
       bordered={false}
       suffixIcon={() => <IconSelectArrow />}
+      onChange={(key) => i18n.changeLanguage(key)}
     >
       <Option value="ru">
         <img className="lang-switcher-flag" src={ruFlag} alt="Ru" />

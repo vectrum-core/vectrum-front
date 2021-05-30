@@ -1,6 +1,6 @@
 import React, { useState } from "react";
+import { connect } from "react-redux";
 import { hot } from "react-hot-loader";
-
 import {
   Typography,
   Form,
@@ -17,9 +17,12 @@ import {
   TelegramIcon,
   CloseIcon,
 } from "../../Icons/Icons";
-
+import * as S from "../../../store/selectors";
+import * as A from "../../../store/actions";
 import "./Registration.less";
 import "../Auth.less";
+
+
 
 const { Title, Text, Paragraph, Link } = Typography;
 
@@ -117,8 +120,8 @@ function Registration({ onChangeTab }) {
           <Form.Item name="policy">
             <Checkbox className="registration-policy">
               Я согласен с условиями{" "}
-              <Link href="/">пользовательского соглашения</Link> и{" "}
-              <Link href="/">политикой конфиденциальности</Link>.
+              <Link href="/terms">пользовательского соглашения</Link> и{" "}
+              <Link href="/privacy">политикой конфиденциальности</Link>.
             </Checkbox>
           </Form.Item>
 
@@ -182,4 +185,14 @@ function Registration({ onChangeTab }) {
   );
 }
 
-export default hot(module)(Registration);
+const mapStateToProps = (state) => {
+  return {
+    isAuthenticated: S.profile.isAuthenticated(state),
+  };
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {};
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(hot(module)(Registration));

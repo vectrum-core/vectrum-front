@@ -65,7 +65,7 @@ i18n
     ns: ["translation"],
 
     //lng: isProduction ? undefined : "en",
-    fallbackLng: "en",
+    fallbackLng: "ru",
     fallbackNS: "translation",
 
     resources,
