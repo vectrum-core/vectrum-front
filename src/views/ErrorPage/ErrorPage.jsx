@@ -1,4 +1,6 @@
 import React from "react";
+import { hot } from "react-hot-loader";
+import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 
 // import Header from "../components/Header/Header";
@@ -9,7 +11,9 @@ import Image404 from "../../assets/images/404.png";
 
 import "./ErrorPage.less";
 
-export default function ErrorPage() {
+function ErrorPage() {
+  const { t } = useTranslation();
+
   return (
     <div className="error-page">
       {/* <Header></Header> */}
@@ -20,12 +24,12 @@ export default function ErrorPage() {
         </div>
 
         <div className="error-page-text">
-          Возможно, вы ошиблись в адресе или страница была перемещена
+          {t('Возможно, вы ошиблись в адресе или страница была перемещена')}
         </div>
 
-        <Link to="/dashboard">
+        <Link to="/">
           <Button className="error-page-back-btn" type="primary" size="large">
-            Вернуться на главную
+            {t('Вернуться на главную')}
           </Button>
         </Link>
       </div>
@@ -34,3 +38,5 @@ export default function ErrorPage() {
     </div>
   );
 }
+
+export default hot(module)(ErrorPage);
