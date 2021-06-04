@@ -1,10 +1,10 @@
 export const isProduction = process.env.NODE_ENV === "production";
 
 
-export const rootUrl = isProduction ? "http://localhost:3000" : "http://localhost:3000";
-export const apiUrl = isProduction ? "http://localhost:3100" : "http://localhost:3100";
-export const nodeUrl = isProduction ? "http://localhost:8888" : "https://testoname.com:4443";
-export const hyperionUrl = isProduction ? "http://localhost:7000" : "http://localhost:7000";
+export const rootUrl = isProduction ? "https://testoname.com" : "http://localhost:3000";
+export const apiUrl = isProduction ? "http://testoname.com" : "http://localhost:3100";
+export const nodeUrl = isProduction ? "https://testoname.com:4443" : "https://testoname.com:4443";
+export const hyperionUrl = isProduction ? "https://testoname.com:7000" : "http://localhost:7000";
 
 export const explorerUrl = "https://local.bloks.io/"
   + "?nodeUrl=" + nodeUrl
