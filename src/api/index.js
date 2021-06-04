@@ -2,6 +2,7 @@ import httpService from "./http";
 import apiAuthorize from "./apiAuthorize";
 import vectrumService from "./vectrum";
 import profile from "./profile";
+import rates from "./rates";
 
 
 
@@ -38,6 +39,7 @@ const api = ({
     ...http,
     ...profile({ ...baseApi }),
     vectrum,
+    ...rates({ ...baseApi }),
   };
 }
 
