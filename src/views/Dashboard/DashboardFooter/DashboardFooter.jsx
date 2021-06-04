@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { Card } from "antd";
 import Logo from "../../../components/Common/Logo/Logo";
@@ -8,42 +9,45 @@ import "./DashboardFooter.less";
 
 
 
-const nav = [
-  [
-    {
-      to: "/about",
-      title: "О кошельке",
-    },
-    {
-      href: "/buy",
-      title: "Купить",
-    },
-    {
-      to: "faq",
-      title: "FAQ",
-    },
-    {
-      href: `mailto:${projectEmailSupport}`,
-      title: "Служба поддержки",
-    },
-  ],
-  [
-    {
-      href: "/docs",
-      title: "Документация",
-    },
-    {
-      href: "/privacy",
-      title: "Политика конфиденциальности",
-    },
-    {
-      href: "/terms",
-      title: "Пользовательское соглашение",
-    },
-  ],
-];
 
 export default function DashboardFooter() {
+  const { t } = useTranslation();
+
+  const nav = [
+    [
+      {
+        to: "/about",
+        title: t("О кошельке"),
+      },
+      {
+        href: "/buy",
+        title: t("Купить"),
+      },
+      {
+        to: "faq",
+        title: t("FAQ"),
+      },
+      {
+        href: `mailto:${projectEmailSupport}`,
+        title: t("Служба поддержки"),
+      },
+    ],
+    [
+      {
+        href: "/docs",
+        title: t("Документация"),
+      },
+      {
+        href: "/privacy",
+        title: t("Политика конфиденциальности"),
+      },
+      {
+        href: "/terms",
+        title: t("Пользовательское соглашение"),
+      },
+    ],
+  ];
+
   return (
     <footer className="dashboard-footer">
       <Card bordered={false}>

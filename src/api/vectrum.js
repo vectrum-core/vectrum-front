@@ -10,7 +10,7 @@ export default ({ nodeUrl, hyperionUrl, }) => {
     const nodeEndpoint = opts.endpointNode || nodeUrl;
     const hyperionEndpoint = opts.endpointHyperion || hyperionUrl;
 
-    const hyperion = new Hyperion("https://eos.hyperion.eosrio.io", { fetch }); // TODO
+    const hyperion = new Hyperion("https://api.eossweden.org", { fetch }); // TODO
 
     const rpc = new JsonRpc(nodeEndpoint, { fetch });
     const signatureProvider = new JsSignatureProvider(privateKeys);

@@ -16,9 +16,9 @@ function App(props) {
   return (
     <div className="app">
       <Switch>
-        <Route exact path="/" component={!isAuthenticated ? Dashboard : LandingPage} />
+        <Route exact path="/" component={isAuthenticated ? Dashboard : LandingPage} />
 
-        <Route path="/dashboard" component={Dashboard} />
+        {/*<Route path="/dashboard" component={Dashboard} />*/}
 
         <Route path="/buy" component={ErrorPage} />
         <Route path="/about" component={ErrorPage} />

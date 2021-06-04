@@ -1,4 +1,7 @@
 import React, { useEffect, useState } from "react";
+import { connect } from "react-redux";
+import * as S from "../../../store/selectors";
+import { hot } from "react-hot-loader";
 import { Link } from "react-router-dom";
 
 import { Button, Drawer, Row, Col } from "antd";
@@ -35,7 +38,9 @@ const navList = [
   },
 ];
 
-export default function Header() {
+
+
+function Header() {
   const [drawerVisible, setDrawerVisible] = useState(false);
   const [offset, setOffset] = useState(0);
 
@@ -81,6 +86,7 @@ export default function Header() {
                     className="dashboard-header-logout-btn"
                     type="link"
                     icon={<LogoutIcon />}
+                    onClick={() => console.log('log out')}
                   />
                 </Link>
 
@@ -141,3 +147,16 @@ export default function Header() {
     </>
   );
 }
+
+
+const mapStateToProps = (state) => {
+  return {
+    account: S.profile.getAccount,
+  };
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {};
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(hot(module)(Header));

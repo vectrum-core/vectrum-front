@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { NavLink } from "react-router-dom";
 
 import {
@@ -13,45 +14,48 @@ import {
 
 import "./DashboardSidebarNav.less";
 
-const nav = [
-  {
-    to: "/dashboard",
-    title: "Мой кошелёк",
-    icon: <WalletIcon />,
-  },
-  {
-    to: "/dashboard/trading-exchange",
-    title: "Биржа",
-    icon: <StockIcon />,
-  },
-  {
-    to: "/dashboard/mining",
-    title: "Майнинг",
-    icon: <MiningIcon />,
-  },
-  {
-    to: "/dashboard/marketplace",
-    title: "Маркетплейс",
-    icon: <MarketplaceSvgIcon />,
-  },
-  {
-    to: "/dashboard/bonus-program",
-    title: "Бонусная программа",
-    icon: <BonusIcon />,
-  },
-  {
-    to: `/dashboard/settings`,
-    title: "Настройки",
-    icon: <SettingsIcon />,
-  },
-  {
-    to: "/dashboard/help",
-    title: "Помощь",
-    icon: <HelpIcon />,
-  },
-];
 
 export default function DashboardSidebarNav({ onChangeRoute }) {
+  const { t } = useTranslation();
+
+  const nav = [
+    {
+      to: "/dashboard",
+      title: t("Мой кошелёк"),
+      icon: <WalletIcon />,
+    },
+    {
+      to: "/dashboard/trading-exchange",
+      title: t("Биржа"),
+      icon: <StockIcon />,
+    },
+    {
+      to: "/dashboard/mining",
+      title: t("Майнинг"),
+      icon: <MiningIcon />,
+    },
+    {
+      to: "/dashboard/marketplace",
+      title: t("Маркетплейс"),
+      icon: <MarketplaceSvgIcon />,
+    },
+    {
+      to: "/dashboard/bonus-program",
+      title: t("Бонусная программа"),
+      icon: <BonusIcon />,
+    },
+    {
+      to: `/dashboard/settings`,
+      title: t("Настройки"),
+      icon: <SettingsIcon />,
+    },
+    {
+      to: "/dashboard/help",
+      title: t("Помощь"),
+      icon: <HelpIcon />,
+    },
+  ];
+
   return (
     <nav className="dashboard-sidebar-nav">
       <ul className="dashboard-sidebar-nav-list">

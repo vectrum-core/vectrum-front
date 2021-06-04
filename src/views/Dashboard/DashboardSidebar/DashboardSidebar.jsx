@@ -1,4 +1,8 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { connect } from "react-redux";
+import * as S from "../../../store/selectors";
+import { useTranslation } from "react-i18next";
+import { hot } from "react-hot-loader";
 
 import { Typography, Card } from "antd";
 import UserWalletAddress from "../../../components/User/UserWalletAddress/UserWalletAddress";
@@ -12,7 +16,8 @@ const { Title } = Typography;
 
 
 
-export default function DashboardSidebar({ onChangeRoute }) {
+function DashboardSidebar({ onChangeRoute }) {
+  const { t } = useTranslation();
   return (
     <div className="dashboard-sidebar-wrapper">
       <aside className="dashboard-sidebar">
@@ -20,7 +25,7 @@ export default function DashboardSidebar({ onChangeRoute }) {
           <div className="dashboard-sidebar-user">
             <div className="dashboard-sidebar-user-item">
               <Title className="dashboard-sidebar-title" level={3}>
-                Мой адрес
+                {t('Мой адрес')}
               </Title>
 
               <UserWalletAddress></UserWalletAddress>
@@ -28,7 +33,7 @@ export default function DashboardSidebar({ onChangeRoute }) {
 
             <div className="dashboard-sidebar-user-item">
               <Title className="dashboard-sidebar-title" level={3}>
-                Мой баланс
+                {t('Мой баланс')}
               </Title>
 
               <UserBalance></UserBalance>
@@ -41,7 +46,7 @@ export default function DashboardSidebar({ onChangeRoute }) {
 
           <div className="dashboard-sidebar-currency-rates">
             <Title className="dashboard-sidebar-title" level={3}>
-              Курсы валют
+              {t('Курсы валют')}
             </Title>
 
             <CurrencyRates></CurrencyRates>
@@ -51,3 +56,16 @@ export default function DashboardSidebar({ onChangeRoute }) {
     </div>
   );
 }
+
+
+const mapStateToProps = (state) => {
+  return {
+    account: S.profile.getAccount,
+  };
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {};
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(hot(module)(DashboardSidebar));
