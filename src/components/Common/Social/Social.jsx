@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { TwitterIcon, YouTubeIcon, TelegramIcon } from "../../Icons/Icons";
 import {
   projectTwitterUrl,
@@ -11,9 +12,11 @@ import "./Social.less";
 
 
 export default function Social({ dark = false }) {
+  const { t } = useTranslation();
+
   return (
     <div className={dark ? "social social-dark" : "social"}>
-      <h3 className="social-title">Мы в соц. сетях:</h3>
+      <h3 className="social-title">{t("Мы в соц. сетях")}:</h3>
 
       <ul className="social-list">
         <li className="social-list-item">
