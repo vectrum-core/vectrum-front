@@ -9,21 +9,17 @@ import LandingPageBlockchain from "./LandingPageBlockchain/LandingPageBlockchain
 import LandingPageFaq from "./LandingPageFaq/LandingPageFaq";
 import LandingPageFooter from "./LandingPageFooter/LandingPageFooter";
 
-import CreateWallet from "../../components/CreateWallet/CreateWallet";
 import AddEmail from "../../components/AddEmail/AddEmail";
 import AddEmailVerification from "../../components/AddEmail/AddEmailVerification/AddEmailVerification";
-import Alert from "../../components/Alert/Alert";
 
 import "./LandingPage.less";
 
 function LandingPage() {
-  const [isCreateWalletVisible, setIsCreateWalletVisible] = useState(false);
   const [isAddEmailVisible, setIsAddEmailVisible] = useState(false);
   const [
     isAddEmailVerificationVisible,
     setIsAddEmailVerificationVisible,
   ] = useState(false);
-  const [isAlertVisible, setIsAlertVisible] = useState(false);
 
   return (
     <>
@@ -38,11 +34,6 @@ function LandingPage() {
         <LandingPageFooter></LandingPageFooter>
       </div>
 
-      <CreateWallet
-        visible={isCreateWalletVisible}
-        onClose={() => setIsCreateWalletVisible(false)}
-      />
-
       <AddEmail
         visible={isAddEmailVisible}
         onClose={() => setIsAddEmailVisible(false)}
@@ -51,11 +42,6 @@ function LandingPage() {
       <AddEmailVerification
         visible={isAddEmailVerificationVisible}
         onClose={() => setIsAddEmailVerificationVisible(false)}
-      />
-
-      <Alert
-        visible={isAlertVisible}
-        onClose={() => setIsAlertVisible(false)}
       />
     </>
   );

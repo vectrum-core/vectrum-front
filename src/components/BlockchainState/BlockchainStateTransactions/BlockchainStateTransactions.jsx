@@ -16,10 +16,12 @@ const { Title } = Typography;
 
 function BlockchainStateTransactions() {
   const [time, setTime] = useState(0);
+  const intervalMs = 1 * 1000;
   useEffect(() => {
+    setTime(Date.now());
     const intervalId = setInterval(() => {
       setTime(Date.now());
-    }, 1000);
+    }, intervalMs);
     return () => {
       clearInterval(intervalId);
     }
@@ -35,7 +37,7 @@ function BlockchainStateTransactions() {
 
   useEffect(() => {
     try {
-      // TODO получение данных по транзакциям от бэка
+      // TODO считать на бэке кол-во транзакций в блокчейне
       setTxData(txDataTest);
     } catch (error) { console.log(error); }
   }, [time]);

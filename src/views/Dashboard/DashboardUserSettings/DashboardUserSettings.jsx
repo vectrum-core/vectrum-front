@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { connect } from "react-redux";
 import { hot } from "react-hot-loader";
+import { connect } from "react-redux";
+import { useTranslation } from "react-i18next";
 import * as S from "../../../store/selectors";
 import * as A from "../../../store/actions";
 import { api } from "../../../store/configureStore";
@@ -23,6 +24,8 @@ import "./DashboardUserSettings.less";
 const { Title } = Typography;
 const { Panel } = Collapse;
 
+
+
 const PanelHeader = ({
   label,
   value,
@@ -30,42 +33,85 @@ const PanelHeader = ({
   active,
   actionText = "Изменить",
   onTogglePane,
-}) => (
-  <div className="panel-header">
-    <div className="panel-header-label">
-      <b>{label}</b>
+}) => {
+  const { t } = useTranslation();
+  return (
+    <div className="panel-header">
+      <div className="panel-header-label">
+        <b>{label}</b>
+      </div>
+
+      <div className="panel-header-value">{value}</div>
+
+      <div className="panel-header-action">
+        <Button type="link" disabled={noAction} onClick={onTogglePane}>
+          {active ? t("Отмена") : actionText}
+        </Button>
+      </div>
     </div>
-
-    <div className="panel-header-value">{value}</div>
-
-    <div className="panel-header-action">
-      <Button type="link" disabled={noAction} onClick={onTogglePane}>
-        {active ? "Отмена" : actionText}
-      </Button>
-    </div>
-  </div>
-);
+  );
+}
 
 
 
-function DashboardUserSettings({ account, email }) {
+function DashboardUserSettings({
+  isAuthenticated,
+  account,
+  //email,
+}) {
   const [activePane, setActivePane] = useState("");
+  const { t } = useTranslation();
+
+
+  const [time, setTime] = useState(0);
+  const intervalMs = 60 * 1000;
+  useEffect(() => {
+    setTime(Date.now());
+    const intervalId = setInterval(() => {
+      setTime(Date.now());
+    }, intervalMs);
+    return () => {
+      clearInterval(intervalId);
+    }
+  }, []);
+
+  const [state, setState] = useState({});
+  const updateUserData = async () => {
+    if (!isAuthenticated) return;
+    const res = await api.profileGetData();
+    if (res.ok) {
+      setState(res.result)
+    }
+  }
+
+  useEffect(() => {
+    try {
+      updateUserData();
+    } catch (error) { console.log(error); }
+  }, [time]);
+
+
+  // TODO timeout для закрытия
+  const [showAlert, setShowAlert] = useState(true);
 
   return (
     <div className="dashboard-user-settings">
       <Card bordered={false}>
         <Row gutter={[0, { xl: 30, sm: 20, xs: 20 }]}>
           <Col span={12}>
-            <Title level={4}>Настройки</Title>
+            <Title level={4}>{t("Настройки")}</Title>
           </Col>
 
-          <Col span={12}>
-            <Alert
-              type="success"
-              description="Адрес электронной почты был успешно изменен."
-              showIcon
-            />
-          </Col>
+          {showAlert &&
+            <Col span={12}>
+              <Alert
+                type="success"
+                description={t("Адрес электронной почты был успешно изменен.")}
+                showIcon
+                closable
+              />
+            </Col>
+          }
 
           <Col span={12}>
             <Collapse
@@ -78,7 +124,7 @@ function DashboardUserSettings({ account, email }) {
               <Panel
                 key="login"
                 header={
-                  <PanelHeader label="Логин" value={account} noAction />
+                  <PanelHeader label={t("Логин")} value={state.username} noAction />
                 }
               />
 
@@ -86,9 +132,9 @@ function DashboardUserSettings({ account, email }) {
                 key="email"
                 header={
                   <PanelHeader
-                    label="Почта"
-                    value={email ? email : "Почта не добавлена"}
-                    actionText="Добавить"
+                    label={t("Почта")}
+                    value={state.email ? state.email : t("Почта не добавлена")}
+                    actionText={!state.email && t("Добавить")}
                     active={activePane === "email"}
                     onTogglePane={() =>
                       setActivePane(activePane === "email" ? "" : "email")
@@ -97,13 +143,13 @@ function DashboardUserSettings({ account, email }) {
                 }
               >
                 <Form>
-                  <Form.Item label="Добавить адрес" name="email">
+                  <Form.Item label={t("Добавить адрес")} name="email">
                     <Input type="email" size="large" allowClear />
                   </Form.Item>
 
                   <Form.Item className="dashboard-user-settings-form-action form-action">
                     <Button htmlType="submit" type="primary" size="large">
-                      Сохранить адрес
+                      {t("Сохранить адрес")}
                     </Button>
                   </Form.Item>
                 </Form>
@@ -113,7 +159,7 @@ function DashboardUserSettings({ account, email }) {
                 key="password"
                 header={
                   <PanelHeader
-                    label="Пароль"
+                    label={t("Пароль")}
                     value="***********"
                     active={activePane === "password"}
                     onTogglePane={() =>
@@ -125,21 +171,21 @@ function DashboardUserSettings({ account, email }) {
                 <Alert
                   className="form-alet"
                   type="error"
-                  description="Пароль не изменён, так как новый пароль повторен неправильно."
+                  description={t("Пароль не изменён, так как новый пароль повторен неправильно.")}
                   showIcon
                 />
 
                 <Form>
-                  <Form.Item label="Старый пароль" name="password">
+                  <Form.Item label={t("Старый пароль")} name="password">
                     <Input.Password type="password" size="large" allowClear />
                   </Form.Item>
 
-                  <Form.Item label="Старый пароль" name="new-password">
+                  <Form.Item label={t("Новый пароль")} name="new-password">
                     <Input.Password type="password" size="large" allowClear />
                   </Form.Item>
 
                   <Form.Item
-                    label="Повторите пароль"
+                    label={t("Повторите пароль")}
                     name="repeat-new-password"
                   >
                     <Input.Password type="password" size="large" allowClear />
@@ -147,7 +193,7 @@ function DashboardUserSettings({ account, email }) {
 
                   <Form.Item className="dashboard-user-settings-form-action form-action">
                     <Button htmlType="submit" type="primary" size="large">
-                      Сохранить пароль
+                      {t("Сохранить пароль")}
                     </Button>
                   </Form.Item>
                 </Form>
@@ -174,7 +220,7 @@ function DashboardUserSettings({ account, email }) {
 
                   <Form.Item className="dashboard-user-settings-form-action form-action">
                     <Button htmlType="submit" type="primary" size="large">
-                      Сохранить
+                      {t("Сохранить")}
                     </Button>
                   </Form.Item>
                 </Form>
@@ -190,8 +236,9 @@ function DashboardUserSettings({ account, email }) {
 
 const mapStateToProps = (state) => {
   return {
-    account: S.profile.getAccount,
-    email: null,
+    isAuthenticated: S.profile.isAuthenticated(state),
+    account: S.profile.getAccount(state),
+    email: S.profile.getEmail(state),
   };
 }
 

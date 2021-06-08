@@ -39,7 +39,7 @@ function UserWalletAddress({ account }) {
 
 const mapStateToProps = (state) => {
   return {
-    account: S.profile.getAccount,
+    account: S.profile.getAccount(state),
   };
 }
 

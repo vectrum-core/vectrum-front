@@ -1,13 +1,14 @@
 import React from "react";
+import { hot } from "react-hot-loader";
 // import { Link } from "react-router-dom";
-
 import { Link as AnchorLink } from "react-scroll";
 
 import { scrollOptions } from "../../../../assets/js/const/index";
-
 import "./DashboardHeaderNav.less";
 
-export default function HeaderNav({ list }) {
+
+
+function HeaderNav({ list }) {
   return (
     <nav className="dashboard-header-nav">
       <ul className="dashboard-header-nav-list">
@@ -37,3 +38,5 @@ export default function HeaderNav({ list }) {
     </nav>
   );
 }
+
+export default hot(module)(HeaderNav);

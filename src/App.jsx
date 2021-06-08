@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { hot } from "react-hot-loader";
-import { Switch, Route } from "react-router-dom";
+import { Switch, Route, Redirect } from "react-router-dom";
 import LandingPage from "./views/LandingPage/LandingPage";
 import Dashboard from "./views/Dashboard/Dashboard";
 import ErrorPage from "./views/ErrorPage/ErrorPage";
@@ -13,12 +13,15 @@ import "./App.less";
 function App(props) {
   const { isAuthenticated } = props;
 
+  // TODO дашборд только если вошел
   return (
     <div className="app">
       <Switch>
-        <Route exact path="/" component={isAuthenticated ? Dashboard : LandingPage} />
+        <Route exact path="/">
+          {isAuthenticated ? <Redirect to="/dashboard" /> : <LandingPage />}
+        </Route>
 
-        {/*<Route path="/dashboard" component={Dashboard} />*/}
+        <Route path="/dashboard" component={Dashboard} />
 
         <Route path="/buy" component={ErrorPage} />
         <Route path="/about" component={ErrorPage} />

@@ -60,8 +60,6 @@ export default function LandingPageHeader() {
     const main = document.querySelector(".landing-page-main");
     const mainHeight = main.offsetHeight;
 
-    console.log("mainHeight :>> ", mainHeight);
-
     setMainHeight(mainHeight);
   }, []);
 

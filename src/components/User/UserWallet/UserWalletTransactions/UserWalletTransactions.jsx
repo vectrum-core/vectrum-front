@@ -13,38 +13,39 @@ import "./UserWalletTransactions.less";
 
 const { Title, Paragraph } = Typography;
 
-// 
+
+
 function UserWalletTransactions({ account }) {
   const [time, setTime] = useState(0);
+  const intervalMs = 60 * 1000;
   useEffect(() => {
+    setTime(Date.now());
     const intervalId = setInterval(() => {
       setTime(Date.now());
-    }, 60 * 1000);
+    }, intervalMs);
     return () => {
       clearInterval(intervalId);
     }
   }, []);
 
 
-  const [txList, setTxList] = useState([]);
-  const updateTxList = async () => {
+  // TODO считать на бэке транзакции
+  const [state, setState] = useState({ received: 100000, sended: 70000, });
+  const { received, sended } = state;
+  const sum = received + sended;
+
+
+  const updateData = async () => {
     try {
-      const res = await api.vectrum.hyperion.get_transfers({ to: "ivannikovdev" });;
-      console.log(res)
-      if (!account) {
-        if (res.actions.length > 0) {
-          //setBalance(res[0].split(' ')[0]);
-        }
+      const res = {};//await api.?();
+      if (res.ok) {
       }
-    } catch (error) {
-      console.error(error);
-      setTxList('0.0000');
-    }
+    } catch (error) { console.error(error); }
   }
 
   useEffect(() => {
     try {
-      updateTxList();
+      updateData();
     } catch (error) { console.log(error); }
   }, [time]);
 
@@ -67,7 +68,11 @@ function UserWalletTransactions({ account }) {
                   </Paragraph>
 
                   <Paragraph className="fs-24 typography-tag">
-                    5,125
+                    <NumberFormat
+                      displayType='text' thousandSeparator
+                      decimalScale={0} fixedDecimalScale={0}
+                      value={sum} defaultValue='0'
+                    />
                     <Tag>VTM</Tag>
                   </Paragraph>
 
@@ -82,7 +87,13 @@ function UserWalletTransactions({ account }) {
                       Отправлено
                     </Paragraph>
 
-                    <Paragraph className="fs-18">4,604</Paragraph>
+                    <Paragraph className="fs-18">
+                      <NumberFormat
+                        displayType='text' thousandSeparator
+                        decimalScale={0} fixedDecimalScale={0}
+                        value={sended} defaultValue='0'
+                      />
+                    </Paragraph>
                   </div>
 
                   <div className="user-wallet-list-item">
@@ -90,7 +101,13 @@ function UserWalletTransactions({ account }) {
                       Получено
                     </Paragraph>
 
-                    <Paragraph className="fs-18">658</Paragraph>
+                    <Paragraph className="fs-18">
+                      <NumberFormat
+                        displayType='text' thousandSeparator
+                        decimalScale={0} fixedDecimalScale={0}
+                        value={received} defaultValue='0'
+                      />
+                    </Paragraph>
                   </div>
                 </Col>
               </Row>
@@ -106,7 +123,7 @@ function UserWalletTransactions({ account }) {
                   "0%": "#FC4A1A",
                   "100%": "#F7B733",
                 }}
-                percent={40}
+                percent={sended / sum * 100}
               ></Progress>
 
               <Progress
@@ -116,7 +133,7 @@ function UserWalletTransactions({ account }) {
                   "0%": "#2B332C",
                   "100%": "#199C6F",
                 }}
-                percent={60}
+                percent={received / sum * 100}
               ></Progress>
             </div>
           </Col>
@@ -129,7 +146,7 @@ function UserWalletTransactions({ account }) {
 
 const mapStateToProps = (state) => {
   return {
-    account: S.profile.getAccount,
+    account: S.profile.getAccount(state),
   };
 }
 

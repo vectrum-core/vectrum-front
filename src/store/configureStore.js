@@ -33,6 +33,7 @@ export const configureStore = (preloadedState = {}) => {
   );
   const persistor = persistStore(store);
 
+
   if (module.hot) {
     // Enable Webpack hot module replacement for reducers
     module.hot.accept("./rootReducer", () => {

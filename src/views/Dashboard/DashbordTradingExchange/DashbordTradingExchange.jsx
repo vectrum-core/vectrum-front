@@ -1,4 +1,6 @@
 import React from "react";
+import { hot } from "react-hot-loader";
+import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 
 import { Card, Row, Col, Typography, Form, Input, Select, Button } from "antd";
@@ -9,6 +11,8 @@ import "./DashbordTradingExchange.less";
 
 const { Title } = Typography;
 const { Option } = Select;
+
+
 
 const currencySelector = (
   <Form.Item name="prefix">
@@ -24,7 +28,22 @@ const currencySelector = (
   </Form.Item>
 );
 
-export default function DashbordTradingExchange() {
+
+
+function DashbordTradingExchange() {
+  const { t } = useTranslation();
+  // TODO получение рейтов
+  /* TODO это внешний кошелек
+     - как вариант https://pancakeswap.finance/ в BSC за USDT
+     - при покупке,
+       нужно выдавать адрес куда отправлять оплату (мерчант),
+       фиксировать поступление оплаты (мерчант),
+       и начислять на аккаунт получателя в блокчейне VECTRUM
+     - при продаже,
+       выдать пользователю аккаунт куда отправить VTM,
+       фиксировать что транзакция подтверждена
+       отправить средства на адрес пользователя
+  */
   return (
     <div className="dashbord-trading-exchange">
       <Card bordered={false}>
@@ -35,29 +54,29 @@ export default function DashbordTradingExchange() {
           ]}
         >
           <Col span={12}>
-            <Title level={4}>Биржа</Title>
+            <Title level={4}>{t('Биржа')}</Title>
           </Col>
 
           <Col md={6} span={12}>
             <Card bordered={false}>
               <Col span={12}>
-                <Title level={5}>Купить VTM</Title>
+                <Title level={5}>{t('Купить VTM')}</Title>
 
                 <Form className="floating-label-form" layout="vertical">
-                  <Form.Item label="Сколько VTM покупаем" name="amount-buy">
-                    <Input addonBefore="VTM" size="large" allowClear></Input>
+                  <Form.Item label={t("Сколько VTM покупаем")} name="amount-buy">
+                    <Input addonBefore="VTM" size="large" allowClear />
                   </Form.Item>
 
-                  <Form.Item label="Какую монету тратим" name="currency-give">
+                  <Form.Item label={t("Какую монету тратим")} name="currency-give">
                     <Input
                       addonBefore={currencySelector}
                       size="large"
                       allowClear
-                    ></Input>
+                    />
                   </Form.Item>
 
-                  <Form.Item label="Введите адрес" name="address-buy">
-                    <Input size="large" allowClear></Input>
+                  <Form.Item label={t("Введите адрес")} name="address-buy">
+                    <Input size="large" allowClear />
                   </Form.Item>
 
                   <Form.Item className="form-action">
@@ -67,9 +86,7 @@ export default function DashbordTradingExchange() {
                         type="primary"
                         size="large"
                         block
-                      >
-                        Купить VTM
-                      </Button>
+                      >{t("Купить VTM")}</Button>
                     </Link>
                   </Form.Item>
                 </Form>
@@ -80,25 +97,23 @@ export default function DashbordTradingExchange() {
           <Col md={6} span={12}>
             <Card bordered={false}>
               <Col span={12}>
-                <Title level={5} type="secondary">
-                  Продать VTM
-                </Title>
+                <Title level={5} type="secondary">{t("Продать VTM")}</Title>
 
                 <Form className="floating-label-form" layout="vertical">
-                  <Form.Item label="Сколько VTM продаете" name="amount-sell">
-                    <Input addonBefore="VTM" size="large" allowClear></Input>
+                  <Form.Item label={t("Сколько VTM продаете")} name="amount-sell">
+                    <Input addonBefore="VTM" size="large" allowClear />
                   </Form.Item>
 
-                  <Form.Item label="Какую монету получаем" name="currency-get">
+                  <Form.Item label={t("Какую монету получаем")} name="currency-get">
                     <Input
                       addonBefore={currencySelector}
                       size="large"
                       allowClear
-                    ></Input>
+                    />
                   </Form.Item>
 
-                  <Form.Item label="Введите адрес" name="address-sell">
-                    <Input size="large" allowClear></Input>
+                  <Form.Item label={t("Введите адрес")} name="address-sell">
+                    <Input size="large" allowClear />
                   </Form.Item>
 
                   <Form.Item className="form-action">
@@ -109,9 +124,7 @@ export default function DashbordTradingExchange() {
                         size="large"
                         block
                         disabled
-                      >
-                        Продать VTM
-                      </Button>
+                      >{t("Продать VTM")}</Button>
                     </Link>
                   </Form.Item>
                 </Form>
@@ -123,3 +136,5 @@ export default function DashbordTradingExchange() {
     </div>
   );
 }
+
+export default hot(module)(DashbordTradingExchange);

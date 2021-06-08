@@ -119,6 +119,47 @@ export default ({
   }
 
 
+  const sendRequestPasswordRecoveryByEmail = (email) => {
+    const ApiVersion = "v1";
+    return post({
+      url: apiUrl,
+      endPoint: `/api/${ApiVersion}/profile/email/recovery`,
+      contentType: "application/json",
+      data: { email },
+    });
+  }
+
+
+  const profileGetData = () => {
+    const ApiVersion = 'v1';
+    return authorizedPost({
+      url: apiUrl,
+      endPoint: `/api/${ApiVersion}/profile/data`,
+      contentType: 'application/json',
+      data: {},
+    });
+  }
+
+  const sendVtm = (recipient, amount) => {
+    const ApiVersion = 'v1';
+    return authorizedPost({
+      url: apiUrl,
+      endPoint: `/api/${ApiVersion}/profile/send`,
+      contentType: 'application/json',
+      data: { recipient, amount },
+    });
+  }
+
+  const claimRewards = () => {
+    const ApiVersion = 'v1';
+    return authorizedPost({
+      url: apiUrl,
+      endPoint: `/api/${ApiVersion}/profile/claimrewards`,
+      contentType: 'application/json',
+      data: {},
+    });
+  }
+
   return {
     profileEmailConfirm,
     profileEmailConfirmGetCode,
@@ -131,5 +172,11 @@ export default ({
     profileSignInByEmail,
     profileSignInByUsername,
     profileSignInByTelegramAuthData,
+
+    sendRequestPasswordRecoveryByEmail,
+
+    profileGetData,
+    sendVtm,
+    claimRewards,
   };
 }

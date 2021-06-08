@@ -1,4 +1,5 @@
 import React from "react";
+import { hot } from "react-hot-loader";
 import { useTranslation } from "react-i18next";
 import { NavLink } from "react-router-dom";
 
@@ -15,7 +16,8 @@ import {
 import "./DashboardSidebarNav.less";
 
 
-export default function DashboardSidebarNav({ onChangeRoute }) {
+
+function DashboardSidebarNav({ onChangeRoute }) {
   const { t } = useTranslation();
 
   const nav = [
@@ -77,3 +79,5 @@ export default function DashboardSidebarNav({ onChangeRoute }) {
     </nav>
   );
 }
+
+export default hot(module)(DashboardSidebarNav);

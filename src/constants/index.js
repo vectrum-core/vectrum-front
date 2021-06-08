@@ -28,3 +28,21 @@ export const projectTwitterUrl = "https://twitter.com/?";
 export const projectYouTubeUrl = "https://www.youtube.com/?";
 export const projectTelegramUrl = "https://t.me/?";
 export const projectEmailSupport = "support@vectrum.group";
+
+export const telegramBotUsername = isProduction ? "VG345TestBot" : "VG345TestBot";
+
+
+export const vectrumChain = {
+  chainId: 'b89a72f48900fb6255afd1a93920a2b813cbe15132f23a7568aaa65a5ccce1fd',
+  rpcEndpoints: [{
+    protocol: 'http',
+    host: 'testoname.com',
+    port: 8888,
+  }, {
+    protocol: 'https',
+    host: 'testoname.com',
+    port: 4443,
+  }]
+};
+
+export const appName = 'VECTRUM';

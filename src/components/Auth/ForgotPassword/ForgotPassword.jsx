@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useTranslation, Trans } from "react-i18next";
 import { connect } from "react-redux";
 import { hot } from "react-hot-loader";
 import { Row, Col, Typography, Form, Input, Button, Modal } from "antd";
 import { CloseIcon } from "../../Icons/Icons";
 import * as S from "../../../store/selectors";
 import * as A from "../../../store/actions";
+import { api } from "../../../store/configureStore";
 import "./ForgotPassword.less";
 import "../Auth.less";
 
@@ -12,28 +14,61 @@ import "../Auth.less";
 
 const { Title, Text, Paragraph, Link } = Typography;
 
-function ForgotPassword({ onChangeTab }) {
-  const [isSuccessModalVisible, setIsSuccessModalVisible] = useState(false);
 
-  function onSubmitForm() {
-    setIsSuccessModalVisible(true);
+
+function ForgotPassword({ onChangeTab }) {
+  const { i18n, t } = useTranslation();
+  const [isSuccessModalVisible, setIsSuccessModalVisible] = useState(false);
+  const [email, setEmail] = useState('');
+  const [submitDisabled, setSubmitDisabled] = useState(true);
+
+
+  const onEmailChange = (e) => {
+    e.preventDefault();
+    setEmail(e.target.value);
   }
 
-  function onClose() {
+
+  useEffect(() => {
+    if (email !== "" && submitDisabled) {
+      setSubmitDisabled(false);
+    } else if (!submitDisabled) {
+      setSubmitDisabled(true);
+    }
+  }, [email]);
+
+
+  const onSubmitForm = async (e) => {
+    if (submitDisabled) return;
+
+    try {
+      const res = await api.sendRequestPasswordRecoveryByEmail(email);
+      if (res.ok) {
+        setIsSuccessModalVisible(true);
+      } else {
+        console.error(res.error);
+        alert(res.error.message);
+      }
+    } catch (error) { console.error(error); }
+  }
+
+
+  const onClose = () => {
     setIsSuccessModalVisible(false);
     onChangeTab("RESET_PASSWORD");
   }
+
 
   return (
     <>
       <div className="auth-form forgot-password">
         <Title className="forgot-password-title" level={2}>
-          Восстановление пароля
+          {t("Восстановление пароля")}
         </Title>
 
         <Text className="forgot-password-subtitle" type="secondary">
-          Вспомнили пароль?{" "}
-          <Link onClick={() => onChangeTab("LOGIN")}>Войти</Link>
+          {t("Вспомнили пароль?")}{" "}
+          <Link onClick={() => onChangeTab("LOGIN")}>{t("Войти")}</Link>
         </Text>
 
         <Form
@@ -43,9 +78,15 @@ function ForgotPassword({ onChangeTab }) {
           <Form.Item
             label="Email"
             name="email"
-            help="Укажите Email, который Вы использовали для входа на сайт."
+            help={t("Укажите Email, который Вы использовали для входа на сайт.")}
           >
-            <Input placeholder="Введите Ваш Email"></Input>
+            <Input
+              required
+              type='email' name='email'
+              placeholder={t("Введите Ваш Email")}
+              value={email}
+              onChange={onEmailChange}
+            />
           </Form.Item>
 
           <Form.Item className="forgot-password-form-action form-action">
@@ -55,15 +96,13 @@ function ForgotPassword({ onChangeTab }) {
               size="large"
               block
               onClick={onSubmitForm}
-            >
-              Продолжить
-            </Button>
+            >{t("Продолжить")}</Button>
           </Form.Item>
         </Form>
       </div>
 
       <Modal
-        title="Проверьте ваш Email"
+        title={t("Проверьте ваш Email")}
         width="470px"
         visible={isSuccessModalVisible}
         onCancel={onClose}
@@ -73,21 +112,23 @@ function ForgotPassword({ onChangeTab }) {
         <Row gutter={[0, 20]}>
           <Col span={12}>
             <Paragraph className="fs-18">
-              На{" "}
-              <Link href="#mailto:example@vectrum.group">
-                example@vectrum.group
-              </Link>{" "}
-              отправлено письмо с инструкцией по восстановлению пароля.
+              <Trans i18n={i18n}>
+                На{" "}
+                <Link href={`#mailto:${email}`}>
+                  {email}
+                </Link>{" "}
+                отправлено письмо с инструкцией по восстановлению пароля.
+              </Trans>
             </Paragraph>
 
             <Paragraph className="fs-18">
-              Если вы не получили письмо, то проверьте спам.
+              {t("Если вы не получили письмо, то проверьте спам.")}
             </Paragraph>
           </Col>
 
           <Col span={12}>
             <Button type="primary" size="large" block onClick={onClose}>
-              Готово
+              {t("Готово")}
             </Button>
           </Col>
         </Row>

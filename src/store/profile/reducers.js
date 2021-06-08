@@ -30,6 +30,10 @@ function profileReducer(state = initialState, action = {}) {
       return merge(state, payload);
     }
 
+    case AT.SET_USER_SUCCESS: {
+      return merge(state, { ...payload, authenticated: true, });
+    }
+
     default:
       return state;
   }

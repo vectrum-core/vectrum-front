@@ -1,24 +1,34 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { hot } from "react-hot-loader";
+import { connect } from "react-redux";
+import { useTranslation, Trans } from "react-i18next";
+import * as S from "../../store/selectors";
+import * as A from "../../store/actions";
+import { api } from "../../store/configureStore";
+import NumberFormat from 'react-number-format';
+
 
 import { Modal, Button, Typography } from "antd";
-
 import { CloseIcon } from "../Icons/Icons";
-
 import IconSuccess from "../../assets/images/icons/IconSuccess.svg";
-
 import "./SendCoinsStatus.less";
 
 const { Title, Text } = Typography;
 
-export default function SendCoinsStatus() {
-  const [isVisible, setIsVisible] = useState(true);
+
+
+function SendCoinsStatus({
+  visible, onClose,
+  account, symbol, amount,
+}) {
+  const { t, i18n } = useTranslation();
 
   return (
     <Modal
       title=""
       width="470px"
-      visible={isVisible}
-      onCancel={() => setIsVisible(false)}
+      visible={visible}
+      onCancel={() => onClose(false)}
       closeIcon={<CloseIcon />}
       footer={null}
     >
@@ -31,22 +41,45 @@ export default function SendCoinsStatus() {
         />
 
         <Title className="send-coins-status-title" level={3}>
-          Операция произведена <br />
-          успешно!
+          <Trans i18n={i18n}>
+            Операция произведена <br />
+            успешно!
+          </Trans>
         </Title>
 
-        <Text>Перевод на адрес 1erF44g4sd5f</Text>
+        <Text>{t("Перевод на адрес")} {account}</Text>
         <br />
-        <Text>10,000 VTM</Text>
-
-        <Text className="send-coins-status-action-info fs-18">
-          Нажмите на кнопку ниже для перехода в кошелёк
+        <Text>
+          <NumberFormat
+            displayType={'text'}
+            thousandSeparator
+            decimalScale={4} fixedDecimalScale={4}
+            value={amount} defaultValue={0}
+            suffix={" " + symbol}
+          />
         </Text>
 
-        <Button type="primary" size="large">
-          Мой кошелёк
-        </Button>
+        <Text className="send-coins-status-action-info fs-18">
+          {t("Нажмите на кнопку ниже для перехода в кошелёк")}
+        </Text>
+
+        <Button
+          type="primary" size="large"
+          onClick={() => onClose(false)}
+        >{t("Мой кошелёк")}</Button>
       </div>
     </Modal>
   );
 }
+
+
+const mapStateToProps = (state) => {
+  return {
+  };
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {};
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(hot(module)(SendCoinsStatus));

@@ -50,10 +50,12 @@ function getContinuousRate(timePassedAfterActivation = 0) {
 
 function StakingCalculator() {
   const [time, setTime] = useState(0);
+  const intervalMs = 1 * 1000;
   useEffect(() => {
+    setTime(Date.now());
     const intervalId = setInterval(() => {
       setTime(Date.now());
-    }, 1000);
+    }, intervalMs);
     return () => {
       clearInterval(intervalId);
     }
@@ -152,12 +154,12 @@ function StakingCalculator() {
 
   const [inputVtm, setInputVtm] = useState('1000000');
   const onInputVtmChange = (e) => {
-    e.preventDefault();
+    //e.preventDefault();
     setInputVtm(e.target.value);
   }
   const [outputVtm, setOutputVtm] = useState('');
   const onOutputVtmChange = (e) => {
-    e.preventDefault();
+    //e.preventDefault();
     setOutputVtm(e.target.value);
   }
 

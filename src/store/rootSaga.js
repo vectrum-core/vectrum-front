@@ -1,6 +1,7 @@
 import { all, call, fork } from "redux-saga/effects";
 import rehydrateRootSaga from "./rehydrate/sagaRegister";
 import profileRootSaga from "./profile/sagaRegister";
+import scatterRootSaga from "./scatter/sagaRegister";
 
 
 
@@ -12,6 +13,7 @@ export default function* rootSaga(fullApi) {
     call(welcomeSaga),
     fork(rehydrateRootSaga()),
     fork(profileRootSaga(fullApi)),
+    fork(scatterRootSaga()),
   ];
 
   yield all(sagas);

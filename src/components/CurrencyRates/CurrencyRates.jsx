@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import NumberFormat from 'react-number-format';
 
 import { Descriptions } from "antd";
 
@@ -12,28 +13,34 @@ const colors = {
   down: "#FC4A1A",
 };
 
+
+const initRates = {
+  VTM: { symbol: 'VTM', price: '0', upOrDown: 'up', upOrDownPercent: '0' },
+  BTC: { symbol: 'BTC', price: '0', upOrDown: 'up', upOrDownPercent: '0' },
+  ETH: { symbol: 'ETH', price: '0', upOrDown: 'up', upOrDownPercent: '0' },
+};
+
 export default function CurrencyRates() {
   const [time, setTime] = useState(0);
+  const intervalMs = 60 * 1000;
   useEffect(() => {
     setTime(Date.now());
     const intervalId = setInterval(() => {
       setTime(Date.now());
-    }, 60 * 1000);
+    }, intervalMs);
     return () => {
       clearInterval(intervalId);
     }
   }, []);
 
-  const [currencyRates, setCurrencyRates] = useState({
-    VTM: { symbol: 'VTM', price: '0', upOrDown: 'up', upOrDownPercent: '0' },
-    BTC: { symbol: 'BTC', price: '0', upOrDown: 'up', upOrDownPercent: '0' },
-    ETH: { symbol: 'ETH', price: '0', upOrDown: 'up', upOrDownPercent: '0' },
-  });
+  const [currencyRates, setCurrencyRates] = useState(initRates);
   const updateCurrencyRates = async () => {
     try {
       const res = await api.getCurrencyRates();
       if (res.ok)
         setCurrencyRates(res.result);
+      else
+        setCurrencyRates(initRates);
     } catch (error) { console.log(error); }
   }
 
@@ -50,7 +57,14 @@ export default function CurrencyRates() {
           <b>VTM</b>
         </Descriptions.Item>
         <Descriptions.Item className="ant-descriptions-item-centred">
-          <b>${currencyRates['VTM'].price}</b>
+          <b>
+            <NumberFormat
+              displayType='text' thousandSeparator
+              decimalScale={2} fixedDecimalScale={2}
+              value={currencyRates['VTM'].price} defaultValue='0'
+              prefix={'$'}
+            />
+          </b>
         </Descriptions.Item>
         <Descriptions.Item>
           <div className="currency-rates-diff">
@@ -58,10 +72,13 @@ export default function CurrencyRates() {
               ? <TriangleUpIcon style={{ color: colors.up }}></TriangleUpIcon>
               : <TriangleDownIcon style={{ color: colors.down }}></TriangleDownIcon>
             }
-            <b>
-              {currencyRates['VTM'].upOrDown === 'up' ? '+' : '-'}
-              {currencyRates['VTM'].upOrDownPercent}%
-            </b>
+            <NumberFormat
+              displayType='text' thousandSeparator
+              decimalScale={2} fixedDecimalScale={2}
+              value={currencyRates['VTM'].upOrDownPercent} defaultValue='0'
+              suffix={'%'}
+              prefix={currencyRates['VTM'].upOrDown === 'up' ? '+' : '-'}
+            />
           </div>
         </Descriptions.Item>
       </Descriptions>
@@ -69,7 +86,12 @@ export default function CurrencyRates() {
       <Descriptions>
         <Descriptions.Item>BTC</Descriptions.Item>
         <Descriptions.Item className="ant-descriptions-item-centred">
-          ${currencyRates['BTC'].price}
+          <NumberFormat
+            displayType='text' thousandSeparator
+            decimalScale={2} fixedDecimalScale={2}
+            value={currencyRates['BTC'].price} defaultValue='0'
+            prefix={'$'}
+          />
         </Descriptions.Item>
         <Descriptions.Item>
           <div className="currency-rates-diff">
@@ -77,8 +99,13 @@ export default function CurrencyRates() {
               ? <TriangleUpIcon style={{ color: colors.up }}></TriangleUpIcon>
               : <TriangleDownIcon style={{ color: colors.down }}></TriangleDownIcon>
             }
-            {currencyRates['BTC'].upOrDown === 'up' ? '+' : '-'}
-            {currencyRates['BTC'].upOrDownPercent}%
+            <NumberFormat
+              displayType='text' thousandSeparator
+              decimalScale={2} fixedDecimalScale={2}
+              value={currencyRates['BTC'].upOrDownPercent} defaultValue='0'
+              suffix={'%'}
+              prefix={currencyRates['BTC'].upOrDown === 'up' ? '+' : '-'}
+            />
           </div>
         </Descriptions.Item>
       </Descriptions>
@@ -86,7 +113,12 @@ export default function CurrencyRates() {
       <Descriptions>
         <Descriptions.Item>ETH</Descriptions.Item>
         <Descriptions.Item className="ant-descriptions-item-centred">
-          ${currencyRates['ETH'].price}
+          <NumberFormat
+            displayType='text' thousandSeparator
+            decimalScale={2} fixedDecimalScale={2}
+            value={currencyRates['ETH'].price} defaultValue='0'
+            prefix={'$'}
+          />
         </Descriptions.Item>
         <Descriptions.Item>
           <div className="currency-rates-diff">
@@ -94,8 +126,13 @@ export default function CurrencyRates() {
               ? <TriangleUpIcon style={{ color: colors.up }}></TriangleUpIcon>
               : <TriangleDownIcon style={{ color: colors.down }}></TriangleDownIcon>
             }
-            {currencyRates['ETH'].upOrDown === 'up' ? '+' : '-'}
-            {currencyRates['ETH'].upOrDownPercent}%
+            <NumberFormat
+              displayType='text' thousandSeparator
+              decimalScale={2} fixedDecimalScale={2}
+              value={currencyRates['ETH'].upOrDownPercent} defaultValue='0'
+              suffix={'%'}
+              prefix={currencyRates['ETH'].upOrDown === 'up' ? '+' : '-'}
+            />
           </div>
         </Descriptions.Item>
       </Descriptions>

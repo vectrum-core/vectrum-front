@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { connect } from "react-redux";
 import { hot } from "react-hot-loader";
+import { useTranslation } from "react-i18next";
+import { connect } from "react-redux";
 import * as S from "../../../store/selectors";
 import * as A from "../../../store/actions";
 import { api } from "../../../store/configureStore";
@@ -16,22 +17,22 @@ const { Title, Paragraph } = Typography;
 
 
 const blockchainInfoInit = {
-  "server_version": "",
-  "chain_id": "",
-  "head_block_num": 0,
-  "last_irreversible_block_num": 0,
-  "last_irreversible_block_id": "",
-  "head_block_id": "",
-  "head_block_time": "",
-  "head_block_producer": "",
-  "virtual_block_cpu_limit": 0,
-  "virtual_block_net_limit": 0,
-  "block_cpu_limit": 0,
-  "block_net_limit": 0,
-  "server_version_string": "",
-  "fork_db_head_block_num": 0,
-  "fork_db_head_block_id": "",
-  "server_full_version_string": ""
+  server_version: "",
+  chain_id: "",
+  head_block_num: 0,
+  last_irreversible_block_num: 0,
+  last_irreversible_block_id: "",
+  head_block_id: "",
+  head_block_time: "",
+  head_block_producer: "",
+  virtual_block_cpu_limit: 0,
+  virtual_block_net_limit: 0,
+  block_cpu_limit: 0,
+  block_net_limit: 0,
+  server_version_string: "",
+  fork_db_head_block_num: 0,
+  fork_db_head_block_id: "",
+  server_full_version_string: ""
 };
 
 const vtmStatsInit = {
@@ -44,12 +45,17 @@ const vtmStakedInit = "0.0000 VTM";
 
 
 
-function BlockchainStateCurrentIssue() {
+function BlockchainStateCurrentIssue(props = {}) {
+  const { account } = props;
+  const { t } = useTranslation();
+
   const [time, setTime] = useState(0);
+  const intervalMs = 60 * 1000;
   useEffect(() => {
+    setTime(Date.now());
     const intervalId = setInterval(() => {
       setTime(Date.now());
-    }, 1000);
+    }, intervalMs);
     return () => {
       clearInterval(intervalId);
     }
@@ -80,7 +86,7 @@ function BlockchainStateCurrentIssue() {
   const [vtmStaked, setVtmStaked] = useState(vtmStakedInit);
   const updateVtmStaked = async () => {
     try {
-      const res = await api.vectrum.rpc.get_currency_balance('eosio.token', 'eosio.stake', 'VTM');
+      const res = await api.vectrum.rpc.get_currency_balance('eosio.token', account, 'VTM');
       setVtmStaked(res[0]);
     } catch (error) {
       console.error(error);
@@ -111,7 +117,7 @@ function BlockchainStateCurrentIssue() {
     gradientOrange.addColorStop(1, "#F7B733");
 
     return {
-      labels: ["В стейках", "Свободно"],
+      labels: [t("В стейках"), t("Свободно")],
       datasets: [
         {
           data: [vtmStats.supply.split(' ')[0], vtmStaked.split(' ')[0]],
@@ -131,7 +137,7 @@ function BlockchainStateCurrentIssue() {
       <Card size="small">
         <Row>
           <Col span="12">
-            <Title level={5}>Текущая эмиссия</Title>
+            <Title level={5}>{t("Текущая эмиссия")}</Title>
           </Col>
 
           <Col span={12}>
@@ -141,14 +147,14 @@ function BlockchainStateCurrentIssue() {
                   <Row gutter={[0, 24]}>
                     <Col>
                       <Paragraph type="secondary" className="fs-14">
-                        Текущая эмиссия
+                        {t("Текущая эмиссия")}
                       </Paragraph>
 
                       <Paragraph className="fs-24 typography-tag">
                         <NumberFormat
                           displayType={'text'}
                           defaultValue={0}
-                          thousandSeparator={true}
+                          thousandSeparator
                           value={vtmStats.supply.split(' ')[0]}
                         />
                         <Tag>VTM</Tag>
@@ -161,7 +167,7 @@ function BlockchainStateCurrentIssue() {
                         <NumberFormat
                           displayType={'text'}
                           defaultValue={0}
-                          thousandSeparator={true}
+                          thousandSeparator
                           value={vtmVolume}
                         />
                         <Tag>USD</Tag>
@@ -170,13 +176,13 @@ function BlockchainStateCurrentIssue() {
 
                     <Col>
                       <Paragraph type="secondary" className="fs-14">
-                        В стейках
+                        {t("В стейках")}
                       </Paragraph>
                       <Paragraph type="secondary" className="fs-18">
                         <NumberFormat
                           displayType={'text'}
                           defaultValue={0}
-                          thousandSeparator={true}
+                          thousandSeparator
                           fixedDecimalScale={true}
                           decimalScale={2}
                           value={vtmStakedPercent}
@@ -184,19 +190,19 @@ function BlockchainStateCurrentIssue() {
                       </Paragraph>
 
                       <Paragraph type="secondary" className="fs-14">
-                        Блок
+                        {t("Блок")}
                       </Paragraph>
                       <Paragraph type="secondary" className="fs-18">
                         <NumberFormat
                           displayType={'text'}
                           defaultValue={0}
-                          thousandSeparator={true}
+                          thousandSeparator
                           value={blockchainInfo.head_block_num}
                         />
                       </Paragraph>
 
                       <Paragraph type="secondary" className="fs-14">
-                        Max эмиссия
+                        {t("Max эмиссия")}
                       </Paragraph>
                       <Paragraph
                         type="secondary"
@@ -205,7 +211,7 @@ function BlockchainStateCurrentIssue() {
                         <NumberFormat
                           displayType={'text'}
                           defaultValue={0}
-                          thousandSeparator={true}
+                          thousandSeparator
                           value={vtmStats.max_supply.split(' ')[0]}
                         />
                         <Tag>VTM</Tag>
@@ -245,6 +251,7 @@ function BlockchainStateCurrentIssue() {
 
 const mapStateToProps = (state) => {
   return {
+    account: 'eosio.stake', // TODO
   };
 }
 

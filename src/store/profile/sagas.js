@@ -53,7 +53,7 @@ export default ({ api, }) => {
         permissions: [],
         authenticated: false,
       }));
-      yield api.profileSignOut();
+      //yield api.profileSignOut();
     } catch (error) {
       yield console.error(logLocation, "profileSignOutSaga()", error);
     }
@@ -62,6 +62,10 @@ export default ({ api, }) => {
 
   const updateSaga = function* () {
     try {
+      const res = yield api.profileGetData();
+      if (res.ok) {
+        yield put(A.setAuth(res.result));
+      }
     } catch (error) {
       yield console.error(logLocation, "updateSaga()", error);
     }

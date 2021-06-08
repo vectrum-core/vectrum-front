@@ -14,3 +14,5 @@ export const SIGN_UP_FAILURE = "@@profile/SIGN_UP_FAILURE";
 
 export const SIGN_OUT = "@@profile/SIGN_OUT";
 export const SET_AUTH = "@@profile/SET_AUTH";
+
+export const SET_USER_SUCCESS = "@@profile/SET_USER_SUCCESS";

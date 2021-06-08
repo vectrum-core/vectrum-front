@@ -1,4 +1,7 @@
 import React from "react";
+import { hot } from "react-hot-loader";
+import { useTranslation, Trans } from "react-i18next";
+import NumberFormat from 'react-number-format';
 import { Link } from "react-router-dom";
 
 import { Card, Typography, Button } from "antd";
@@ -9,7 +12,17 @@ import "./DashbordTradingExchangeResult.less";
 
 const { Title, Text } = Typography;
 
-export default function DashbordTradingExchangeResult() {
+
+
+function DashbordTradingExchangeResult(props = {}) { // TODO передача параметров в компанент
+  const {
+    amount, symbol, address, chain, txHash,
+  } = {
+    amount: 10000, symbol: 'VTM', address: 'vectrumgroup',
+    chain: 'vectrum', txHash: '0x...',
+  }; //props; 
+  const { i18n, t } = useTranslation();
+
   return (
     <div className="dashbord-trading-exchange-result">
       <Card bordered={false}>
@@ -21,24 +34,37 @@ export default function DashbordTradingExchangeResult() {
         />
 
         <Title className="dashbord-trading-exchange-result-title" level={3}>
-          Операция произведена <br />
-          успешно!
+          <Trans i18n={i18n}>
+            Операция произведена <br />
+            успешно!
+          </Trans>
         </Title>
 
-        <Text>Перевод на адрес 1erF44g4sd5f</Text>
+        <Text>
+          {t("Перевод на адрес")}{' '}
+          {address} {/* TODO как ссылка на нужный экесплорер на адрес */}
+          {/* TODO ссылка на транзакцию в нужном эксплорере */}
+        </Text>
         <br />
-        <Text>10,000 VTM</Text>
+        <Text>
+          <NumberFormat
+            displayType='text' thousandSeparator
+            value={amount} defaultValue='0'
+            suffix={' ' + symbol}
+          />
+        </Text>
 
         <Text className="dashbord-trading-exchange-result-action-info fs-18">
-          Нажмите на кнопку ниже для перехода в кошелёк
+          {t("Нажмите на кнопку ниже для перехода в кошелёк")}
         </Text>
 
         <Link to="/dashboard">
-          <Button type="primary" size="large">
-            Мой кошелёк
-          </Button>
+          <Button type="primary" size="large"
+          >{t("Мой кошелёк")}</Button>
         </Link>
       </Card>
     </div>
   );
 }
+
+export default hot(module)(DashbordTradingExchangeResult);

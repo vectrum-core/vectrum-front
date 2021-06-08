@@ -27,3 +27,5 @@ export const getAuthCredentials = (state) => {
   const token = getToken(state);
   return { guid, token, };
 }
+export const getUsername = (state) =>
+  getIn(state, [root, "username"], null);

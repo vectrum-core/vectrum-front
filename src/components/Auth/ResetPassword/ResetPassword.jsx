@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { connect } from "react-redux";
 import { hot } from "react-hot-loader";
 import { Typography, Form, Input, Button } from "antd";
@@ -12,26 +13,28 @@ import "../Auth.less";
 const { Title, Text, Link } = Typography;
 
 function ResetPassword({ onChangeTab }) {
+  const { t } = useTranslation();
+
+
   const [password, setPassword] = useState("");
-  const [password2, setPassword2] = useState("");
-  const [submitDisabled, setSubmitDisabled] = useState(true);
-
-
   const onPasswordChange = (e) => {
-    e.preventDefault();
     setPassword(e.target.value);
   }
 
+
+  const [password2, setPassword2] = useState("");
   const onPassword2Change = (e) => {
-    e.preventDefault();
     setPassword2(e.target.value);
   }
 
-  const onSubmit = (e) => {
-    e.preventDefault();
-    onChangeTab("LOGIN");
+
+  const [code, setCode] = useState("");
+  const onCodeChange = (e) => {
+    setCode(e.target.value);
   }
 
+
+  const [submitDisabled, setSubmitDisabled] = useState(true);
   useEffect(() => {
     if (password !== "" && password.length >= 8 && password === password2 && submitDisabled) {
       setSubmitDisabled(false);
@@ -40,32 +43,51 @@ function ResetPassword({ onChangeTab }) {
     }
   }, [password, password2]);
 
+
+  const onSubmit = (e) => {
+    if (submitDisabled) return;
+
+    onChangeTab("LOGIN");
+  }
+
+
   return (
     <div className="auth-form reset-password">
       <Title className="reset-password-title" level={2}>
-        Восстановление пароля
+        {t("Восстановление пароля")}
       </Title>
 
       <Text className="forgot-password-subtitle" type="secondary">
-        Вспомнили пароль?{" "}
-        <Link onClick={() => onChangeTab("LOGIN")}>Войти</Link>
+        {t("Вспомнили пароль?")}{" "}
+        <Link onClick={() => onChangeTab("LOGIN")}>{t("Войти")}</Link>
       </Text>
 
       <Form className="reset-password-form border-less-form" layout="vertical">
-        <Form.Item label="Новый пароль" name="password">
+        <Form.Item label={t("Новый пароль")} name="password">
           <Input
-            type="password" placeholder="Введите новый пароль"
-            value={password}
+            required
+            type="password" placeholder={t("Введите новый пароль")}
+            value={password} minLength={8}
             onChange={onPasswordChange}
-          ></Input>
+          />
         </Form.Item>
 
-        <Form.Item label="Повторите пароль" name="password-recovery">
+        <Form.Item label={t("Повторите пароль")} name="password-recovery">
           <Input
-            type="password" placeholder="Повторите новый пароль"
-            value={password2}
+            required
+            type="password" placeholder={t("Повторите новый пароль")}
+            value={password2} minLength={8}
             onChange={onPassword2Change}
-          ></Input>
+          />
+        </Form.Item>
+
+        <Form.Item label={t("Код")} name="code">
+          <Input
+            required
+            type="number" placeholder={t("Введите код")}
+            value={code} minLength={8}
+            onChange={onCodeChange}
+          />
         </Form.Item>
 
         <Form.Item className="reset-password-form-action form-action">
@@ -75,10 +97,8 @@ function ResetPassword({ onChangeTab }) {
             size="large"
             block
             onClick={onSubmit}
-            disabled={submitDisabled}
-          >
-            Изменить пароль
-          </Button>
+          //disabled={submitDisabled}
+          >{t("Изменить пароль")}</Button>
         </Form.Item>
       </Form>
     </div>

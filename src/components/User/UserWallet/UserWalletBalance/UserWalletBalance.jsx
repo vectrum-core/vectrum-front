@@ -1,4 +1,11 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { hot } from "react-hot-loader";
+import { connect } from "react-redux";
+import { useTranslation } from "react-i18next";
+import * as S from "../../../../store/selectors";
+import * as A from "../../../../store/actions";
+import { api } from "../../../../store/configureStore";
+import NumberFormat from 'react-number-format';
 
 import { Card, Row, Col, Typography, Tag } from "antd";
 import { Doughnut } from "react-chartjs-2";
@@ -7,37 +14,104 @@ import "./UserWalletBalance.less";
 
 const { Title, Paragraph } = Typography;
 
-const chartData = (canvas) => {
-  const ctx = canvas.getContext("2d");
-  const gradientGreen = ctx.createLinearGradient(0, 0, 0, 100);
-  const gradientOrange = ctx.createLinearGradient(0, 0, 60, 100);
 
-  gradientGreen.addColorStop(0, "#60AF83");
-  gradientGreen.addColorStop(1, "#28C76F");
 
-  gradientOrange.addColorStop(0, "#FC4A1A");
-  gradientOrange.addColorStop(1, "#F7B733");
+function UserWalletBalance({
+  account,
+}) {
+  const { t } = useTranslation();
 
-  return {
-    labels: ["В стейках", "Свободно"],
-    datasets: [
-      {
-        data: [3000, 1000],
-        backgroundColor: [gradientGreen, gradientOrange],
-        hoverBackgroundColor: [gradientGreen, gradientOrange],
-      },
-    ],
+  const [time, setTime] = useState(0);
+  const intervalMs = 60 * 1000;
+  useEffect(() => {
+    setTime(Date.now());
+    const intervalId = setInterval(() => {
+      setTime(Date.now());
+    }, intervalMs);
+    return () => {
+      clearInterval(intervalId);
+    }
+  }, []);
+
+
+  const [balance, setBalance] = useState(0);
+  const updateBalance = async () => {
+    if (!account) return;
+    try {
+      const res = await api.vectrum.rpc.get_currency_balance('eosio.token', account, 'VTM');
+      if (res.length > 0) {
+        setBalance(parseInt(res[0].split(' ')[0]));
+      }
+    } catch (error) { console.error(error); }
+  }
+
+
+  const [staked, setStaked] = useState(0);
+  const updateStaked = async () => {
+    if (!account) return;
+    try {
+      const res = await api.vectrum.rpc.get_account(account);
+      if (res.voter_info) {
+        setStaked(parseInt(res.voter_info.staked) / 1000);
+      }
+    } catch (error) { console.error(error); }
+  }
+  const sum = balance + staked;
+  let stakedPercent = '0';
+  if (sum > 0) {
+    stakedPercent = (staked / sum * 100).toFixed(0);
+  }
+
+
+  // TODO забирать на бэке прайсы
+  const [price, setPrice] = useState(0.02);
+  const updateRates = async () => {
+    try {
+      const res = {};//await api.?();
+      if (res.ok) {
+      }
+    } catch (error) { console.error(error); }
+  }
+
+
+  useEffect(() => {
+    try {
+      updateRates();
+      updateBalance();
+      updateStaked();
+    } catch (error) { console.log(error); }
+  }, [time]);
+
+  const chartData = (canvas) => {
+    const ctx = canvas.getContext("2d");
+    const gradientGreen = ctx.createLinearGradient(0, 0, 0, 100);
+    const gradientOrange = ctx.createLinearGradient(0, 0, 60, 100);
+
+    gradientGreen.addColorStop(0, "#60AF83");
+    gradientGreen.addColorStop(1, "#28C76F");
+
+    gradientOrange.addColorStop(0, "#FC4A1A");
+    gradientOrange.addColorStop(1, "#F7B733");
+
+    return {
+      labels: [t("В стейках"), t("Свободно")],
+      datasets: [
+        {
+          data: [staked, balance],
+          backgroundColor: [gradientGreen, gradientOrange],
+          hoverBackgroundColor: [gradientGreen, gradientOrange],
+        },
+      ],
+    };
   };
-};
 
-export default function UserWalletBalance() {
   return (
     <div className="user-wallet-block user-wallet-balance">
       <Card size="small">
         <Row align="bottom" gutter={[0, { sm: 0, xs: 20 }]}>
           <Col span="12">
             <Title level={5} className="user-wallet-block-title">
-              Баланс
+              {t('Баланс')}
             </Title>
           </Col>
 
@@ -46,16 +120,24 @@ export default function UserWalletBalance() {
               <Row gutter={[0, 25]}>
                 <Col span={12}>
                   <Paragraph type="secondary" className="fs-14">
-                    Текущий баланс
+                    {t('Текущий баланс')}
                   </Paragraph>
 
                   <Paragraph className="fs-24 typography-tag">
-                    124,568,521
+                    <NumberFormat
+                      displayType='text' thousandSeparator
+                      decimalScale={4} fixedDecimalScale={4}
+                      value={sum} defaultValue='0'
+                    />
                     <Tag>VTM</Tag>
                   </Paragraph>
 
                   <Paragraph type="secondary" className="fs-14 typography-tag">
-                    14,675.00
+                    <NumberFormat
+                      displayType='text' thousandSeparator
+                      decimalScale={2} fixedDecimalScale={2}
+                      value={sum * price} defaultValue='0'
+                    />
                     <Tag>USD</Tag>
                   </Paragraph>
                 </Col>
@@ -63,22 +145,30 @@ export default function UserWalletBalance() {
                 <Col span={12}>
                   <div className="user-wallet-list-item">
                     <Paragraph type="secondary" className="fs-14">
-                      В стейках
+                      {t('В стейках')}
                     </Paragraph>
 
                     <Paragraph className="fs-18 typography-tag">
-                      124,568,521
+                      <NumberFormat
+                        displayType='text' thousandSeparator
+                        decimalScale={0} fixedDecimalScale={0}
+                        value={staked} defaultValue='0'
+                      />
                       <Tag>VTM</Tag>
                     </Paragraph>
                   </div>
 
                   <div className="user-wallet-list-item">
                     <Paragraph type="secondary" className="fs-14">
-                      Свободно
+                      {t('Свободно')}
                     </Paragraph>
 
                     <Paragraph className="fs-18 typography-tag">
-                      14,568,521
+                      <NumberFormat
+                        displayType='text' thousandSeparator
+                        decimalScale={0} fixedDecimalScale={0}
+                        value={balance} defaultValue='0'
+                      />
                       <Tag>VTM</Tag>
                     </Paragraph>
                   </div>
@@ -98,7 +188,7 @@ export default function UserWalletBalance() {
                 options={{
                   elements: {
                     center: {
-                      text: "85%",
+                      text: stakedPercent + "%",
                       color: "#ffffff",
                       fontStyle: "Roboto",
                       sidePadding: 30,
@@ -115,3 +205,15 @@ export default function UserWalletBalance() {
     </div>
   );
 }
+
+const mapStateToProps = (state) => {
+  return {
+    account: S.profile.getAccount(state),
+  };
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {};
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(hot(module)(UserWalletBalance));

@@ -1,4 +1,7 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { hot } from "react-hot-loader";
+import { connect } from "react-redux";
+import { useTranslation } from "react-i18next";
 
 import { Card, Row, Col, Typography, Select } from "antd";
 import UserWalletBalance from "./UserWalletBalance/UserWalletBalance";
@@ -13,7 +16,11 @@ import "./UserWallet.less";
 const { Title } = Typography;
 const { Option } = Select;
 
-export default function UserWallet() {
+
+
+function UserWallet() {
+  const { t } = useTranslation();
+
   return (
     <div className="user-wallet">
       <Card bordered={false}>
@@ -25,22 +32,22 @@ export default function UserWallet() {
         >
           <Col sm={6} xs={12}>
             <Title level={4} className="user-wallet-title">
-              Мой кошелёк
+              {t("Мой кошелёк")}
             </Title>
           </Col>
 
           <Col sm={6} xs={12}>
             <div className="user-wallet-filter">
               <Select
-                defaultValue="Сегодня"
+                defaultValue={'today'}
                 size="small"
                 suffixIcon={() => <img src={IconSelectArrow} alt="arrow" />}
               >
-                <Option value="Сегодня">Сегодня</Option>
-                <Option value="Неделя">Неделя</Option>
-                <Option value="Месяц">Месяц</Option>
-                <Option value="Год">Год</Option>
-                <Option value="c">За все время</Option>
+                <Option value="today">{t("Сегодня")}</Option>
+                <Option value="week">{t("Неделя")}</Option>
+                <Option value="month">{t("Месяц")}</Option>
+                <Option value="year">{t("Год")}</Option>
+                <Option value="all">{t("За все время")}</Option>
               </Select>
 
               <Select
@@ -76,3 +83,14 @@ export default function UserWallet() {
     </div>
   );
 }
+
+
+const mapStateToProps = (state) => {
+  return {};
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {};
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(hot(module)(UserWallet));

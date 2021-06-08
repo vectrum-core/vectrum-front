@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useTranslation, Trans } from "react-i18next";
 import { connect } from "react-redux";
 import { hot } from "react-hot-loader";
 import {
@@ -19,18 +20,27 @@ import {
 } from "../../Icons/Icons";
 import * as S from "../../../store/selectors";
 import * as A from "../../../store/actions";
+import { api } from "../../../store/configureStore";
 import "./Registration.less";
 import "../Auth.less";
+
+import TelegramLoginWidget from '../../../components/TelegramLoginWidget';
+import { telegramBotUsername } from '../../../constants';
 
 
 
 const { Title, Text, Paragraph, Link } = Typography;
 
-const LoginInfo = () => (
-  <Tooltip placement="left" title="Some login info">
-    <InfoIcon></InfoIcon>
-  </Tooltip>
-);
+
+
+const LoginInfo = () => {
+  const { t } = useTranslation();
+  return (
+    <Tooltip placement="left" title={t("Минимум 6 символов a-z0-9")}>
+      <InfoIcon></InfoIcon>
+    </Tooltip>
+  );
+}
 
 const resgistrationTypes = [
   {
@@ -47,31 +57,132 @@ const resgistrationTypes = [
   },
 ];
 
-function Registration({ onChangeTab }) {
+
+
+function Registration({
+  onChangeTab, setUserData,
+}) {
+  const { i18n, t } = useTranslation();
   const [registrationType, setRegistrationType] = useState("WITH_LOGIN");
   const [isVerifyModalVisible, setIsVerifyModalVisible] = useState(false);
 
-  function onRegisterWithTelegram() { }
 
-  function onSubmitForm() {
-    setIsVerifyModalVisible(true);
+  const [login, setLogin] = useState("");
+  const onLoginChange = (e) => {
+    setLogin(e.target.value);
   }
 
-  function onClose() {
+
+  const [email, setEmail] = useState("");
+  const onEmailChange = (e) => {
+    setEmail(e.target.value);
+  }
+
+
+  const [password, setPassword] = useState("");
+  const onPasswordChange = (e) => {
+    setPassword(e.target.value);
+  }
+
+
+  const [password2, setPassword2] = useState("");
+  const onPassword2Change = (e) => {
+    setPassword2(e.target.value);
+  }
+
+
+  const [code, setCode] = useState("");
+  const onCodeChange = (e) => {
+    setCode(e.target.value);
+  }
+
+
+  const [submitDisabled, setSubmitDisabled] = useState(true);
+  useEffect(() => {
+    if (password !== "" && password.length >= 8 && password === password2 && submitDisabled) {
+      setSubmitDisabled(false);
+    } else if (!submitDisabled) {
+      setSubmitDisabled(true);
+    }
+  }, [password, password2]);
+
+
+  const onSubmitForm = async () => {
+    if (submitDisabled) return;
+
+    if (registrationType === "WITH_LOGIN" && login.length >= 6) {
+      try {
+        const res = await api.profileSignUpByUsername(login, password);
+        if (res.ok) {
+          setUserData({ ...res.result, authenticated: true, });
+        } else {
+          console.error(res.error);
+          alert(res.error.message);
+        }
+      } catch (error) {
+        console.error(error);
+        alert(JSON.stringify(error));
+      }
+      return;
+    }
+
+    if (registrationType === "WITH_EMAIL") {
+      try {
+        const res = await api.profileSignUpByEmail(email, password);
+        if (res.ok) {
+          setUserData({ ...res.result, authenticated: true, });
+          setIsVerifyModalVisible(true);
+        } else {
+          console.error(res.error);
+          alert(res.error.message);
+        }
+      } catch (error) {
+        console.error(error);
+        alert(JSON.stringify(error));
+      }
+      return;
+    }
+  }
+
+
+  const onRegisterWithTelegram = () => {
+    //setRegistrationType("WITH_TELEGRAM");
+  }
+
+  const handleTelegramResponse = async (telegramAuthData) => {
+    // https://core.telegram.org/widgets/login
+    const res = await api.authCheckTelegramAuthData(telegramAuthData);
+    if (res.ok) {
+      const res2 = await api.profileSignUpByTelegramAuthData(telegramAuthData);
+      if (res2.ok) {
+        setUserData({ ...res2.result, authenticated: true, });
+      }
+    }
+  }
+
+
+  const onClose = () => {
     setIsVerifyModalVisible(false);
-    onChangeTab("LOGIN");
+    //onChangeTab("LOGIN"); // TODO нужно ли перекидывать на вход или сразу авторизация
   }
+
+  const onNext = () => {
+    if (code.length < 8) return;
+    setIsVerifyModalVisible(false);
+    onChangeTab("LOGIN"); // TODO нужно ли перекидывать на вход или сразу авторизация
+  }
+
 
   return (
     <>
       <div className="auth-form registration">
         <Title className="registration-title" level={2}>
-          Регистрация
+          {t("Регистрация")}
         </Title>
 
         <Text className="registration-subtitle" type="secondary">
-          Уже есть аккаунт?{" "}
-          <Link onClick={() => onChangeTab("LOGIN")}>Войти</Link>
+          {t("Уже есть аккаунт?")}{" "}
+          <Link onClick={() => onChangeTab("LOGIN")}>{t("Войти")}</Link>
         </Text>
 
         <div className="registration-steps">
@@ -86,7 +197,7 @@ function Registration({ onChangeTab }) {
               }
               onClick={() =>
                 item.type === "WITH_TELEGRAM"
-                  ? onRegisterWithTelegram
+                  ? onRegisterWithTelegram()
                   : setRegistrationType(item.type)
               }
             ></Button>
@@ -95,52 +206,94 @@ function Registration({ onChangeTab }) {
 
         <Form className="registration-form border-less-form" layout="vertical">
           {registrationType === "WITH_LOGIN" && (
-            <Form.Item label="Логин" name="login">
+            <Form.Item label={t("Логин")} name="login">
               <Input
-                placeholder="Введите логин"
+                required
+                type="text" placeholder={t("Введите логин")}
                 addonAfter={<LoginInfo />}
-              ></Input>
+                value={login} pattern="[a-z0-9]{6,}"
+                onChange={onLoginChange}
+              />
             </Form.Item>
           )}
 
           {registrationType === "WITH_EMAIL" && (
-            <Form.Item label="Email" name="login">
-              <Input type="email" placeholder="Введите ваш Email"></Input>
+            <Form.Item label={t("Email")} name="login">
+              <Input
+                required
+                type="email" placeholder={t("Введите ваш Email")}
+                value={email}
+                onChange={onEmailChange}
+              />
             </Form.Item>
           )}
 
-          <Form.Item label="Пароль" name="password">
-            <Input type="password" placeholder="Введите пароль"></Input>
-          </Form.Item>
+          {registrationType === "WITH_TELEGRAM" && (
+            <Form.Item label={t("Telegram")} name="login">
+              <TelegramLoginWidget
+                dataOnauth={handleTelegramResponse}
+                botName={telegramBotUsername}
+                requestAccess={'write'}
+                lang={i18n.language}
+                usePic={true}
+              />
+            </Form.Item>
+          )}
 
-          <Form.Item label="Повторите пароль" name="password-repeat">
-            <Input type="password" placeholder="Повторите пароль"></Input>
-          </Form.Item>
 
-          <Form.Item name="policy">
-            <Checkbox className="registration-policy">
-              Я согласен с условиями{" "}
-              <Link href="/terms">пользовательского соглашения</Link> и{" "}
-              <Link href="/privacy">политикой конфиденциальности</Link>.
-            </Checkbox>
-          </Form.Item>
+          {registrationType != "WITH_TELEGRAM" && (
+            <Form.Item label={t("Пароль")} name="password">
+              <Input
+                required
+                type="password" placeholder={t("Введите пароль")}
+                value={password} minLength={8}
+                onChange={onPasswordChange}
+              />
+            </Form.Item>
+          )}
 
-          <Form.Item className="registration-form-action form-action">
-            <Button
-              htmlType="submit"
-              type="primary"
-              size="large"
-              block
-              onClick={onSubmitForm}
-            >
-              Зарегистрироваться
-            </Button>
-          </Form.Item>
+          {registrationType != "WITH_TELEGRAM" && (
+            <Form.Item label={t("Повторите пароль")} name="password-repeat">
+              <Input
+                required
+                type="password" placeholder={t("Повторите пароль")}
+                value={password2} minLength={8}
+                onChange={onPassword2Change}
+              />
+            </Form.Item>
+          )}
+
+          {registrationType != "WITH_TELEGRAM" && (
+            <Form.Item name="policy">
+              <Checkbox
+                required
+                className="registration-policy"
+              >
+                <Trans i18n={i18n}>
+                  Я согласен с условиями{" "}
+                  <Link href="/terms">пользовательского соглашения</Link> и{" "}
+                  <Link href="/privacy">политикой конфиденциальности</Link>.
+              </Trans>
+              </Checkbox>
+            </Form.Item>
+          )}
+
+          {registrationType != "WITH_TELEGRAM" && (
+            <Form.Item className="registration-form-action form-action">
+              <Button
+                htmlType="submit"
+                type="primary"
+                size="large"
+                block
+                onClick={onSubmitForm}
+              >{t("Зарегистрироваться")}</Button>
+            </Form.Item>
+          )}
         </Form>
       </div>
 
       <Modal
-        title="Подтверждение"
+        title={t("Подтверждение")}
         width="470px"
         wrapClassName="registration-verify-modal"
         visible={isVerifyModalVisible}
@@ -149,23 +302,28 @@ function Registration({ onChangeTab }) {
         footer={null}
       >
         <Paragraph className="fs-18">
-          Мы отправили письмо с кодом на указанный Вами адрес{" "}
-          <Link href="#mailto:example@vectrum.group">
-            example@vectrum.group
-          </Link>
+          <Trans i18n={i18n}>
+            Мы отправили письмо с кодом на указанный Вами адрес{" "}
+            <Link href={`#mailto:${email}`}>
+              {email}
+            </Link>
+          </Trans>
         </Paragraph>
 
         <Paragraph className="fs-18">
-          Пожалуйста, введите код для завершения регистрации.
+          {t("Пожалуйста, введите код для завершения регистрации.")}
         </Paragraph>
 
         <Form className="floating-label-form" layout="vertical">
-          <Form.Item label="Введите код" name="code">
+          <Form.Item label={t("Введите код")} name="code">
             <Input
-              size="large"
-              placeholder="Введите код из письма"
+              required
+              size="large" type="number"
+              placeholder={t("Введите код из письма")}
               allowClear
-            ></Input>
+              value={code} minLength={8}
+              onChange={onCodeChange}
+            />
           </Form.Item>
 
           <Form.Item className="form-action">
@@ -174,10 +332,8 @@ function Registration({ onChangeTab }) {
               type="primary"
               size="large"
               block
-              onClick={onClose}
-            >
-              Далее
-            </Button>
+              onClick={onNext}
+            >{t("Далее")}</Button>
           </Form.Item>
         </Form>
       </Modal>
@@ -192,7 +348,9 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = (dispatch) => {
-  return {};
+  return {
+    setUserData: (data) => dispatch(A.profile.setUserData(data)),
+  };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(hot(module)(Registration));

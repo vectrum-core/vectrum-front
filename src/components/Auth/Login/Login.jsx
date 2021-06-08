@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { connect } from "react-redux";
 import { hot } from "react-hot-loader";
-import { Link as RouterLink } from "react-router-dom";
 import { Typography, Form, Input, Button } from "antd";
 import { LoginIcon, MailIcon, TelegramIcon, LockIcon } from "../../Icons/Icons";
 import * as S from "../../../store/selectors";
 import * as A from "../../../store/actions";
+import { api } from "../../../store/configureStore";
 import "./Login.less";
 import "../Auth.less";
 
+import TelegramLoginWidget from '../../../components/TelegramLoginWidget';
+import { telegramBotUsername } from '../../../constants';
 
 
 const { Title, Text, Link } = Typography;
@@ -28,41 +31,89 @@ const loginTypes = [
   },
 ];
 
-function Login({ onChangeTab }) {
+
+
+function Login({
+  onChangeTab,
+  setUserData,
+}) {
+  const { i18n, t } = useTranslation();
+
   const [loginType, setLoginType] = useState("WITH_LOGIN");
-  const [login, setLogin] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [submitDisabled, setSubmitDisabled] = useState(true);
 
 
   const onLoginWithTelegram = () => {
+    //setLoginType("WITH_TELEGRAM")
   }
 
+  const handleTelegramResponse = async (telegramAuthData) => {
+    // https://core.telegram.org/widgets/login
+    const res = await api.authCheckTelegramAuthData(telegramAuthData);
+    if (res.ok) {
+      const res2 = await api.profileSignInByTelegramAuthData(telegramAuthData);
+      if (res2.ok) {
+        setUserData({ ...res2.result, authenticated: true, });
+      }
+    }
+  }
+
+
+  const [login, setLogin] = useState("");
   const onLoginChange = (e) => {
-    e.preventDefault();
     setLogin(e.target.value);
   }
 
+
+  const [email, setEmail] = useState("");
   const onEmailChange = (e) => {
-    e.preventDefault();
     setEmail(e.target.value);
   }
 
+
+  const [password, setPassword] = useState("");
   const onPasswordChange = (e) => {
-    e.preventDefault();
     setPassword(e.target.value);
   }
 
-  const onSubmit = (e) => {
-    e.preventDefault();
-    switch (loginType) {
-      case "WITH_LOGIN":
-      case "WITH_EMAIL":
-      case "WITH_TELEGRAM":
-        break;
-      default:
-        break;
+
+  const onSubmit = async (e) => {
+    if (submitDisabled) return;
+
+    if (loginType == "WITH_LOGIN") {
+      try {
+        const res = await api.profileSignInByUsername(login, password);
+        if (res.ok) {
+          setUserData({ ...res.result, authenticated: true, });
+        } else {
+          console.error(res.error);
+          alert(res.error.message);
+        }
+      } catch (error) {
+        console.error(error);
+        alert(JSON.stringify(error));
+      }
+      return;
+    }
+
+    if (loginType == "WITH_EMAIL") {
+      try {
+        const res = await api.profileSignInByEmail(email, password);
+        if (res.ok) {
+          setUserData({ ...res.result, authenticated: true, });
+        } else {
+          console.error(res.error);
+          alert(res.error.message);
+        }
+      } catch (error) {
+        console.error(error);
+        alert(JSON.stringify(error));
+      }
+      return;
+    }
+
+    if (loginType == "WITH_TELEGRAM") {
+      return;
     }
   }
 
@@ -78,13 +129,13 @@ function Login({ onChangeTab }) {
   return (
     <div className="auth-form login">
       <Title className="login-title" level={2}>
-        Войти
+        {t("Войти")}
       </Title>
 
       <Text className="login-subtitle" type="secondary">
-        Новый пользователь?{" "}
+        {t("Новый пользователь?")}{" "}
         <Link onClick={() => onChangeTab("REGISTRATION")}>
-          Зарегистрироваться
+          {t("Зарегистрироваться")}
         </Link>
       </Text>
 
@@ -99,7 +150,7 @@ function Login({ onChangeTab }) {
             }
             onClick={() =>
               item.type === "WITH_TELEGRAM"
-                ? onLoginWithTelegram
+                ? onLoginWithTelegram()
                 : setLoginType(item.type)
             }
           ></Button>
@@ -108,57 +159,69 @@ function Login({ onChangeTab }) {
 
       <Form className="login-form border-less-form" layout="vertical">
         {loginType === "WITH_LOGIN" && (
-          <Form.Item label="Логин" name="login">
+          <Form.Item label={t("Логин")} name="login">
             <Input
-              placeholder="Введите логин"
+              placeholder={t("Введите логин")}
               value={login}
               onChange={onLoginChange}
-            ></Input>
+            />
           </Form.Item>
         )}
 
         {loginType === "WITH_EMAIL" && (
-          <Form.Item label="Email" name="login">
+          <Form.Item label={t("Email")} name="login">
             <Input
-              type="email" placeholder="Введите ваш Email"
+              type="email" placeholder={t("Введите ваш Email")}
               value={email}
               onChange={onEmailChange}
-            ></Input>
+            />
           </Form.Item>
         )}
 
-        <Form.Item label="Пароль" name="password">
-          <Input
-            type="password" placeholder="Введите пароль"
-            value={password}
-            onChange={onPasswordChange}
-          ></Input>
-        </Form.Item>
+        {loginType === "WITH_TELEGRAM" && (
+          <Form.Item label={t("Telegram")} name="login">
+            <TelegramLoginWidget
+              dataOnauth={handleTelegramResponse}
+              botName={telegramBotUsername}
+              requestAccess={'write'}
+              lang={i18n.language}
+              usePic={true}
+            />
+          </Form.Item>
+        )}
 
-        <Form.Item className="login-form-action form-action">
-          <RouterLink to="/dashboard">
+        {loginType != "WITH_TELEGRAM" && (
+          <Form.Item label={t("Пароль")} name="password">
+            <Input
+              type="password" placeholder={t("Введите пароль")}
+              value={password}
+              onChange={onPasswordChange}
+            />
+          </Form.Item>
+        )}
+
+        {loginType != "WITH_TELEGRAM" && (
+          <Form.Item className="login-form-action form-action">
             <Button
               htmlType="submit" type="primary" size="large" block
               onClick={onSubmit}
-              disabled={submitDisabled}
-            >
-              Войти
-            </Button>
-          </RouterLink>
+            //disabled={submitDisabled}
+            >{t("Войти")}</Button>
 
-          <Button
-            htmlType="button"
-            type="link"
-            block
-            className="fw-400"
-            onClick={() => onChangeTab("FORGOT_PASSWORD")}
-          >
-            <Text type="secondary">
-              <LockIcon style={{ marginRight: "5px" }}></LockIcon>
-              Забыли пароль?
-            </Text>
-          </Button>
-        </Form.Item>
+            <Button
+              htmlType="button"
+              type="link"
+              block
+              className="fw-400"
+              onClick={() => onChangeTab("FORGOT_PASSWORD")}
+            >
+              <Text type="secondary">
+                <LockIcon style={{ marginRight: "5px" }}></LockIcon>
+                {t("Забыли пароль?")}
+              </Text>
+            </Button>
+          </Form.Item>
+        )}
       </Form>
     </div>
   );
@@ -171,7 +234,9 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = (dispatch) => {
-  return {};
+  return {
+    setUserData: (data) => dispatch(A.profile.setUserData(data)),
+  };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(hot(module)(Login));

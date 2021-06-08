@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { connect } from "react-redux";
 import { hot } from "react-hot-loader";
 import * as S from "../../../store/selectors";
@@ -13,12 +14,18 @@ import BuyCoins from "../../BuyCoins/BuyCoins";
 import "./UserBalance.less";
 
 
-function UserBalance({ account }) {
+function UserBalance({
+  account,
+}) {
+  const { t } = useTranslation();
+
   const [time, setTime] = useState(0);
+  const intervalMs = 5 * 1000;
   useEffect(() => {
+    setTime(Date.now());
     const intervalId = setInterval(() => {
       setTime(Date.now());
-    }, 1000);
+    }, intervalMs);
     return () => {
       clearInterval(intervalId);
     }
@@ -55,7 +62,7 @@ function UserBalance({ account }) {
           <NumberFormat
             displayType={'text'}
             defaultValue={0}
-            thousandSeparator={true}
+            thousandSeparator
             value={balance}
           />
         </div>
@@ -76,9 +83,7 @@ function UserBalance({ account }) {
             size="small"
             block
             onClick={() => setIsBuyCoinsVisible(true)}
-          >
-            Купить
-          </Button>
+          >{t('Купить')}</Button>
         </Col>
 
         <Col sm={6} span={12}>
@@ -87,9 +92,7 @@ function UserBalance({ account }) {
             size="small"
             block
             onClick={() => setIsSendCoinsVisible(true)}
-          >
-            Отправить
-          </Button>
+          >{t('Отправить')}</Button>
         </Col>
       </Row>
 
@@ -109,7 +112,7 @@ function UserBalance({ account }) {
 
 const mapStateToProps = (state) => {
   return {
-    account: S.profile.getAccount,
+    account: S.profile.getAccount(state),
   };
 }
 

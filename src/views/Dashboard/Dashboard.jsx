@@ -1,7 +1,11 @@
-import React from "react";
-
+import React, { useState, useEffect } from "react";
+import { hot } from "react-hot-loader";
+import { connect } from "react-redux";
+import { useTranslation } from "react-i18next";
+import * as S from "../../store/selectors";
+import * as A from "../../store/actions";
+import { api } from "../../store/configureStore";
 import { Switch, Route } from "react-router-dom";
-
 import { Row, Col } from "antd";
 
 import Container from "../../components/Common/Container/Container";
@@ -13,14 +17,29 @@ import DashbordTradingExchangeResult from "./DashbordTradingExchange/DashbordTra
 import DashboardUserSettings from "./DashboardUserSettings/DashboardUserSettings";
 import DashboardFooter from "./DashboardFooter/DashboardFooter";
 
+import DashboardUserMining from "./DashboardUserMining/DashboardUserMining";
+
+
+import CreateWallet from "../../components/CreateWallet/CreateWallet";
 import LogoutAlert from "../../components/LogoutAlert/LogoutAlert";
-import SendCoinsStatus from "../../components/SendCoinsStatus/SendCoinsStatus";
 
 import "./Dashboard.less";
 
-export default function Dashboard() {
+
+
+function Dashboard({
+  account,
+}) {
+  const [isCreateWalletVisible, setIsCreateWalletVisible] = useState(!account);
+
+  // TODO проверка аккаунта на бэке и если нет, то включение модала
   return (
     <>
+      <CreateWallet
+        visible={isCreateWalletVisible}
+        onClose={() => setIsCreateWalletVisible(false)}
+      />
+
       <DashboardHeader></DashboardHeader>
 
       <div className="dashboard">
@@ -53,6 +72,30 @@ export default function Dashboard() {
 
                 <Route
                   exact
+                  path="/dashboard/mining"
+                  component={DashboardUserMining}
+                />
+
+                <Route
+                  exact
+                  path="/dashboard/marketplace"
+                  component={() => null}
+                />
+
+                <Route
+                  exact
+                  path="/dashboard/bonus-program"
+                  component={() => null}
+                />
+
+                <Route
+                  exact
+                  path="/dashboard/help"
+                  component={() => null}
+                />
+
+                <Route
+                  exact
                   path="/dashboard/settings"
                   component={DashboardUserSettings}
                 />
@@ -64,8 +107,25 @@ export default function Dashboard() {
         </Container>
       </div>
 
+      {/*
+      TODO как-то запускать счетчик обратного отсчета до выхода при бездействии пользователя
       <LogoutAlert />
-      <SendCoinsStatus />
+      */}
     </>
   );
 }
+
+
+const mapStateToProps = (state) => {
+  return {
+    account: S.profile.getAccount(state),
+  };
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    //logOutAction: () => dispatch(A.profile.reAuthenticate()),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(hot(module)(Dashboard));

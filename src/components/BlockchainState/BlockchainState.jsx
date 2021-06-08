@@ -1,6 +1,8 @@
 import React from "react";
-
+import { hot } from "react-hot-loader";
+import { useTranslation } from "react-i18next";
 import { Card, Row, Col, Typography } from "antd";
+
 import BlockchainStateCurrentIssue from "./BlockchainStateCurrentIssue/BlockchainStateCurrentIssue";
 import BlockchainStateTransactions from "./BlockchainStateTransactions/BlockchainStateTransactions";
 
@@ -8,7 +10,11 @@ import "./BlockchainState.less";
 
 const { Title } = Typography;
 
-export default function BlockchainState() {
+
+
+function BlockchainState() {
+  const { t } = useTranslation();
+
   return (
     <div className="blockchain-state">
       <Card bordered={false}>
@@ -20,7 +26,7 @@ export default function BlockchainState() {
         >
           <Col span={12}>
             <Title className="blockchain-state-title" level={4}>
-              Состояние блокчейна
+              {t('Состояние блокчейна')}
             </Title>
           </Col>
 
@@ -36,3 +42,5 @@ export default function BlockchainState() {
     </div>
   );
 }
+
+export default hot(module)(BlockchainState);

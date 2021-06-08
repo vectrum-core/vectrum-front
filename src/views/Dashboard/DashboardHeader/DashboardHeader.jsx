@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
+import { hot } from "react-hot-loader";
+import { useTranslation } from "react-i18next";
 import { connect } from "react-redux";
 import * as S from "../../../store/selectors";
-import { hot } from "react-hot-loader";
+import * as A from "../../../store/actions";
 import { Link } from "react-router-dom";
 
 import { Button, Drawer, Row, Col } from "antd";
@@ -19,28 +21,33 @@ import {
 
 import "./DashboardHeader.less";
 
-const navList = [
-  {
-    id: "about-wallet",
-    label: "О кошельке",
-  },
-  {
-    to: "/",
-    label: "Купить",
-  },
-  {
-    id: "faq",
-    label: "FAQ",
-  },
-  {
-    to: "/",
-    label: "Explorer",
-  },
-];
 
 
 
-function Header() {
+function Header({
+  logOut,
+}) {
+  const { t } = useTranslation();
+
+  const navList = [
+    {
+      id: "about-wallet",
+      label: t("О кошельке"),
+    },
+    {
+      to: "/",
+      label: t("Купить"),
+    },
+    {
+      id: "faq",
+      label: t("FAQ"),
+    },
+    {
+      to: "/",
+      label: t("Explorer"),
+    },
+  ];
+
   const [drawerVisible, setDrawerVisible] = useState(false);
   const [offset, setOffset] = useState(0);
 
@@ -86,7 +93,7 @@ function Header() {
                     className="dashboard-header-logout-btn"
                     type="link"
                     icon={<LogoutIcon />}
-                    onClick={() => console.log('log out')}
+                    onClick={logOut}
                   />
                 </Link>
 
@@ -134,6 +141,7 @@ function Header() {
                   className="dashboard-drawer-logout-btn"
                   type="link"
                   icon={<LogoutIcon />}
+                  onClick={logOut}
                 />
               </Link>
             </Col>
@@ -151,12 +159,14 @@ function Header() {
 
 const mapStateToProps = (state) => {
   return {
-    account: S.profile.getAccount,
+    account: S.profile.getAccount(state),
   };
 }
 
 const mapDispatchToProps = (dispatch) => {
-  return {};
+  return {
+    logOut: () => dispatch(A.profile.reAuthenticate()),
+  };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(hot(module)(Header));

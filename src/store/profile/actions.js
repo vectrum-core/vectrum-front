@@ -28,3 +28,8 @@ export const setAuth = (data) => ({
   type: AT.SET_AUTH,
   payload: data,
 });
+
+export const setUserData = ({ token, guid, permissions, }) => ({
+  type: AT.SET_USER_SUCCESS,
+  payload: { token, guid, permissions, },
+});

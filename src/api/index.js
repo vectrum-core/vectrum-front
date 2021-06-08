@@ -3,6 +3,7 @@ import apiAuthorize from "./apiAuthorize";
 import vectrumService from "./vectrum";
 import profile from "./profile";
 import rates from "./rates";
+import account from "./account";
 
 
 
@@ -40,6 +41,7 @@ const api = ({
     ...profile({ ...baseApi }),
     vectrum,
     ...rates({ ...baseApi }),
+    ...account({ ...baseApi }),
   };
 }
 

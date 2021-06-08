@@ -10,6 +10,11 @@ import { Chart, defaults } from "react-chartjs-2";
 import ruRU from "antd/lib/locale/ru_RU";
 import i18n from "./i18n";
 import configureStore from "./store";
+import { vectrumChain, appName } from "./constants";
+
+import { UALProvider } from 'ual-reactjs-renderer';
+import { Scatter } from 'ual-scatter';
+import { Ledger } from 'ual-ledger';
 
 
 
@@ -18,6 +23,7 @@ localforage.config({
   version: 1.0,
   storeName: "keyValuePairs",
 });
+
 
 const config = {
   locale: ruRU,
@@ -127,23 +133,31 @@ Chart.pluginService.register({
   },
 });
 
+// TODO
+// import { withUAL } from 'ual-reactjs-renderer';
+// https://github.com/EOSIO/ual-reactjs-renderer/blob/develop/examples/src/ButtonWebViewReact.tsx
+const scatter = new Scatter([vectrumChain], { appName });
+const ledger = new Ledger([vectrumChain]);
+
 
 const { store, persistor } = configureStore();
 
 const Providers = ({ children }) => {
   return (
     <Suspense fallback={null}>
-      <StoreProvider store={store}>
-        <PersistGate loading={null} persistor={persistor}>
-          <ConfigProvider {...config}>
-            <I18nextProvider i18n={i18n}>
-              <Router>
-                {children}
-              </Router>
-            </I18nextProvider>
-          </ConfigProvider>
-        </PersistGate>
-      </StoreProvider>
+      <UALProvider chains={[vectrumChain]} authenticators={[scatter, ledger]} appName={appName}>
+        <StoreProvider store={store}>
+          <PersistGate loading={null} persistor={persistor}>
+            <ConfigProvider {...config}>
+              <I18nextProvider i18n={i18n}>
+                <Router>
+                  {children}
+                </Router>
+              </I18nextProvider>
+            </ConfigProvider>
+          </PersistGate>
+        </StoreProvider>
+      </UALProvider>
     </Suspense>
   );
 }
