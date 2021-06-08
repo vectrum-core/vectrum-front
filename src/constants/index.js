@@ -2,7 +2,7 @@ export const isProduction = process.env.NODE_ENV === "production";
 
 
 export const rootUrl = isProduction ? "https://testoname.com" : "http://localhost:3000";
-export const apiUrl = isProduction ? "http://testoname.com" : "http://localhost:3100";
+export const apiUrl = isProduction ? "https://testoname.com" : "http://localhost:3100";
 export const nodeUrl = isProduction ? "https://testoname.com:4443" : "https://testoname.com:4443";
 export const hyperionUrl = isProduction ? "https://testoname.com:7000" : "http://localhost:7000";
 
