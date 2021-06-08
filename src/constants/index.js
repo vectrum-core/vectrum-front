@@ -10,7 +10,7 @@ export const explorerUrl = "https://local.bloks.io/"
   + "?nodeUrl=" + nodeUrl
   + "&coreSymbol=VTM"
   + "&corePrecision=4"
-  + "&hyperionUrl=" + hyperionUrl;
+  ;//+ "&hyperionUrl=" + hyperionUrl;
 
 
 export const options = {
