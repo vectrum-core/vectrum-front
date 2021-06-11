@@ -80,10 +80,10 @@ function UserWalletProfit({
     gradientOrange.addColorStop(1, "#F7B733");
 
     return {
-      labels: ["В стейках", "Свободно"],
+      labels: [t("Свободно"), t("В стейках")],
       datasets: [
         {
-          data: [stakeRewards, bonusRewards],
+          data: [bonusRewards, stakeRewards],
           backgroundColor: [gradientGreen, gradientOrange],
           hoverBackgroundColor: [gradientGreen, gradientOrange],
         },

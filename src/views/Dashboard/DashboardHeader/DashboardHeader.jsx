@@ -31,19 +31,19 @@ function Header({
 
   const navList = [
     {
-      id: "about-wallet",
+      to: "/about",
       label: t("О кошельке"),
     },
     {
-      to: "/",
+      to: "/buy",
       label: t("Купить"),
     },
     {
-      id: "faq",
+      to: "/faq",
       label: t("FAQ"),
     },
     {
-      to: "/",
+      to: "/explorer",
       label: t("Explorer"),
     },
   ];

@@ -94,10 +94,10 @@ function UserWalletBalance({
     gradientOrange.addColorStop(1, "#F7B733");
 
     return {
-      labels: [t("В стейках"), t("Свободно")],
+      labels: [t("Свободно"), t("В стейках")],
       datasets: [
         {
-          data: [staked, balance],
+          data: [balance, staked],
           backgroundColor: [gradientGreen, gradientOrange],
           hoverBackgroundColor: [gradientGreen, gradientOrange],
         },

@@ -5,7 +5,10 @@ import Logo from "../../../components/Common/Logo/Logo";
 import Social from "../../../components/Common/Social/Social";
 import { scrollOptions } from "../../../assets/js/const/index";
 import footerImgTop from "../../../assets/images/footer-img-top.svg";
-import { projectEmailSupport } from "../../../constants";
+import {
+  projectEmailSupport,
+  projectTelegramSupportUrl,
+} from "../../../constants";
 import "./LandingPageFooter.less";
 
 
@@ -25,7 +28,7 @@ const nav = [
       title: "FAQ",
     },
     {
-      href: `mailto:${projectEmailSupport}`,
+      href: projectTelegramSupportUrl,
       title: "Служба поддержки",
     },
   ],

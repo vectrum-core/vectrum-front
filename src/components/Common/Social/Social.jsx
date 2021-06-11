@@ -5,6 +5,7 @@ import {
   projectTwitterUrl,
   projectYouTubeUrl,
   projectTelegramUrl,
+  projectTelegramSupportUrl,
   projectEmailSupport,
 } from "../../../constants";
 import "./Social.less";
@@ -53,7 +54,7 @@ export default function Social({ dark = false }) {
         </li>
       </ul>
 
-      <a href={`mailto:${projectEmailSupport}`} className="social-email">
+      <a href={projectTelegramSupportUrl} className="social-email">
         {projectEmailSupport}
       </a>
     </div>

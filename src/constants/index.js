@@ -24,9 +24,10 @@ export const options = {
 
 export const apiOptions = { apiKey: null, options, };
 
-export const projectTwitterUrl = "https://twitter.com/?";
-export const projectYouTubeUrl = "https://www.youtube.com/?";
-export const projectTelegramUrl = "https://t.me/?";
+export const projectTwitterUrl = "https://twitter.com/vectrum_vtm";
+export const projectYouTubeUrl = "https://www.youtube.com/c/VECTRUMGroup";
+export const projectTelegramUrl = "https://t.me/vectrum_platform_rus";
+export const projectTelegramSupportUrl = "https://t.me/Vectrum_support";
 export const projectEmailSupport = "support@vectrum.group";
 
 export const telegramBotUsername = isProduction ? "VG345TestBot" : "VG345TestBot";
