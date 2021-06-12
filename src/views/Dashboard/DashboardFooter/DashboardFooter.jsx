@@ -6,7 +6,10 @@ import { Card } from "antd";
 
 import Logo from "../../../components/Common/Logo/Logo";
 import Social from "../../../components/Common/Social/Social";
-import { projectEmailSupport } from "../../../constants";
+import {
+  projectEmailSupport,
+  projectTelegramSupportUrl,
+} from "../../../constants";
 import "./DashboardFooter.less";
 
 
@@ -30,7 +33,7 @@ function DashboardFooter() {
         title: t("FAQ"),
       },
       {
-        href: `mailto:${projectEmailSupport}`,
+        href: projectTelegramSupportUrl,
         title: t("Служба поддержки"),
       },
     ],

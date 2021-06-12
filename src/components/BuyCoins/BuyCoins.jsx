@@ -19,7 +19,6 @@ const currencySelector = (
       defaultValue="USD"
       suffixIcon={() => <img src={IconSelectArrow} alt="arrow" />}
     >
-      <Option value="VTM">VTM</Option>
       <Option value="USD">USD</Option>
       <Option value="BTC">BTC</Option>
       <Option value="ETH">ETH</Option>
