@@ -3,8 +3,8 @@ export const isProduction = process.env.NODE_ENV === "production";
 
 export const rootUrl = isProduction ? "https://testoname.com" : "http://localhost:3000";
 export const apiUrl = isProduction ? "https://testoname.com" : "http://localhost:3100";
-export const nodeUrl = isProduction ? "https://testoname.com:4443" : "https://testoname.com:4443";
-export const hyperionUrl = isProduction ? "https://testoname.com:7000" : "http://localhost:7000";
+export const nodeUrl = isProduction ? "https://node.testoname.com:443" : "https://node.testoname.com:443";
+export const hyperionUrl = isProduction ? "https://node.testoname.com:7000" : "http://localhost:7000";
 
 export const explorerUrl = "https://local.bloks.io/"
   + "?nodeUrl=" + nodeUrl
@@ -37,12 +37,12 @@ export const vectrumChain = {
   chainId: 'b89a72f48900fb6255afd1a93920a2b813cbe15132f23a7568aaa65a5ccce1fd',
   rpcEndpoints: [{
     protocol: 'http',
-    host: 'testoname.com',
-    port: 8888,
+    host: 'node.testoname.com',
+    port: 80,
   }, {
     protocol: 'https',
-    host: 'testoname.com',
-    port: 4443,
+    host: 'node.testoname.com',
+    port: 443,
   }]
 };
 
