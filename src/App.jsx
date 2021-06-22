@@ -29,7 +29,7 @@ function App(props) {
     <div className="app">
       <Switch>
         <Route exact path="/">
-          {!isAuthenticated ? <Redirect to="/dashboard" /> : <LandingPage />}
+          {isAuthenticated ? <Redirect to="/dashboard" /> : <LandingPage />}
         </Route>
         <Route path="/dashboard" component={Dashboard} />
 
